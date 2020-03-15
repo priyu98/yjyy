@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.Role">
+    <constructor>
+      <idArg column="ROLEID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ROLENAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="MODIFYUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="MODIFYDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="FLAG" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ROLEID, ROLENAME, CREATEUSER, CREATEDATE, MODIFYUSER, MODIFYDATE, FLAG
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_role
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.Role">
+    insert into sys_role (ROLEID, ROLENAME, CREATEUSER, 
+      CREATEDATE, MODIFYUSER, MODIFYDATE, 
+      FLAG)
+    values (#{roleid,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{modifyuser,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{flag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.Role">
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        ROLEID,
+      </if>
+      <if test="rolename != null">
+        ROLENAME,
+      </if>
+      <if test="createuser != null">
+        CREATEUSER,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null">
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.Role">
+    update sys_role
+    <set>
+      <if test="rolename != null">
+        ROLENAME = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=CHAR},
+      </if>
+    </set>
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.Role">
+    update sys_role
+    set ROLENAME = #{rolename,jdbcType=VARCHAR},
+      CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      FLAG = #{flag,jdbcType=CHAR}
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getRoleNameByUser" parameterType="String" resultType="String">
+    select rolename from sys_role r,sys_user_role ur where r.roleid = ur.roleid
+    and ur.userid = #{userid}
+    and r.flag='0'
+  </select>
+
+  <select id="getRoleList" resultType="com.example.yjyy.entity.Role">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_role
+    where flag='0'
+  </select>
+
+  <update id="deleteRole" parameterType="String">
+    update sys_role set flag='1' where roleid = #{roleid}
+  </update>
+
+  <insert id="addUserRole" parameterType="String">
+    insert into sys_user_role(userid,roleid) values(#{userid},#{roleid})
+  </insert>
+
+  <update id="updateUserRole" parameterType="String">
+    update sys_user_role set roleid = #{roleid} where userid = #{userid}
+  </update>
+</mapper>

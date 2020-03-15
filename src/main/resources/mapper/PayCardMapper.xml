@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.PayCardMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.PayCard">
+    <constructor>
+      <idArg column="PAYID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USERID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="GIVEUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="GIVETIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="PAYMENT" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="PAYSTATUS" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="CARDID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CARDNO" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CARDSTATUS" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="TERM" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="OPENTERM" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="QUOTA" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    PAYID, USERID, GIVEUSER, GIVETIME, PAYMENT, PAYSTATUS, CARDID, CARDNO, CARDSTATUS, 
+    TERM, OPENTERM, QUOTA
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yj_user_card
+    where PAYID = #{payid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from yj_user_card
+    where PAYID = #{payid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.PayCard">
+    insert into yj_user_card (PAYID, USERID, GIVEUSER, 
+      GIVETIME, PAYMENT, PAYSTATUS, 
+      CARDID, CARDNO, CARDSTATUS, 
+      TERM, OPENTERM, QUOTA)
+    values (#{payid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{giveuser,jdbcType=VARCHAR}, 
+      #{givetime,jdbcType=TIMESTAMP}, #{payment,jdbcType=DECIMAL}, #{paystatus,jdbcType=CHAR}, 
+      #{cardid,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}, #{cardstatus,jdbcType=CHAR}, 
+      #{term,jdbcType=INTEGER}, #{openterm,jdbcType=INTEGER},#{quota,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.PayCard">
+    insert into yj_user_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="payid != null">
+        PAYID,
+      </if>
+      <if test="userid != null">
+        USERID,
+      </if>
+      <if test="giveuser != null">
+        GIVEUSER,
+      </if>
+      <if test="givetime != null">
+        GIVETIME,
+      </if>
+      <if test="payment != null">
+        PAYMENT,
+      </if>
+      <if test="paystatus != null">
+        PAYSTATUS,
+      </if>
+      <if test="cardid != null">
+        CARDID,
+      </if>
+      <if test="cardno != null">
+        CARDNO,
+      </if>
+      <if test="cardstatus != null">
+        CARDSTATUS,
+      </if>
+      <if test="term != null">
+        TERM,
+      </if>
+      <if test="openterm != null">
+        OPENTERM,
+      </if>
+      <if test="quota != null">
+        QUOTA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="payid != null">
+        #{payid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="giveuser != null">
+        #{giveuser,jdbcType=VARCHAR},
+      </if>
+      <if test="givetime != null">
+        #{givetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payment != null">
+        #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null">
+        #{paystatus,jdbcType=CHAR},
+      </if>
+      <if test="cardid != null">
+        #{cardid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null">
+        #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="cardstatus != null">
+        #{cardstatus,jdbcType=CHAR},
+      </if>
+      <if test="term != null">
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="openterm != null">
+        #{openterm,jdbcType=INTEGER},
+      </if>
+      <if test="quota != null">
+        #{quota,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.PayCard">
+    update yj_user_card
+    <set>
+      <if test="userid != null">
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="giveuser != null">
+        GIVEUSER = #{giveuser,jdbcType=VARCHAR},
+      </if>
+      <if test="givetime != null">
+        GIVETIME = #{givetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payment != null">
+        PAYMENT = #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null">
+        PAYSTATUS = #{paystatus,jdbcType=CHAR},
+      </if>
+      <if test="cardid != null">
+        CARDID = #{cardid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null">
+        CARDNO = #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="cardstatus != null">
+        CARDSTATUS = #{cardstatus,jdbcType=CHAR},
+      </if>
+      <if test="term != null">
+        TERM = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="openterm != null">
+        OPENTERM = #{openterm,jdbcType=INTEGER},
+      </if>
+      <if test="quota != null">
+        QUOTA = #{quota,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PAYID = #{payid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.PayCard">
+    update yj_user_card
+    set USERID = #{userid,jdbcType=VARCHAR},
+      GIVEUSER = #{giveuser,jdbcType=VARCHAR},
+      GIVETIME = #{givetime,jdbcType=TIMESTAMP},
+      PAYMENT = #{payment,jdbcType=DECIMAL},
+      PAYSTATUS = #{paystatus,jdbcType=CHAR},
+      CARDID = #{cardid,jdbcType=VARCHAR},
+      CARDNO = #{cardno,jdbcType=VARCHAR},
+      CARDSTATUS = #{cardstatus,jdbcType=CHAR},
+      TERM = #{term,jdbcType=INTEGER},
+      OPENTERM = #{openterm,jdbcType=INTEGER},
+      QUOTA = #{quota,jdbcType=INTEGER}
+    where PAYID = #{payid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="countNumToday" parameterType="String" resultType="Integer">
+    select count(*) from yj_user_card where givetime >= str_to_date(#{today},'%Y-%m-%d')
+  </select>
+
+  <select id="getMemberList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.MemberPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select uc.payid,u1.username,u1.userphone phone,u1.sex,u2.username teacher,uc.givetime,c.cardname,uc.cardno,uc.quota,uc.cardstatus
+    from yj_user_card uc
+    left join sys_user u1 on u1.userid = uc.userid and u1.flag = '0'
+    left join sys_user u2 on u2.userid = uc.giveuser and u2.flag = '0'
+    left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
+    where 1=1
+    <if test="username != null and username != ''">
+      and u1.username like concat('%',#{username},'%')
+    </if>
+    <if test="teacher != null and teacher != ''">
+      and u2.username = #{teacher}
+    </if>
+    <if test="cardno != null and cardno != ''">
+      and uc.cardno = #{cardno}
+    </if>
+    <if test="paystatus != null and paystatus != ''">
+      and uc.paystatus = #{paystatus}
+    </if>
+    order by uc.givetime desc
+    limit #{begin},#{end}
+    )A
+  </select>
+  
+  <select id="getUseableCards" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.MemberPageResult">
+    select uc.payid, c.cardname
+    from yj_user_card uc
+    left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
+    where uc.userid = #{userid} and uc.cardid in
+    (select cc.cardid from yj_card_course cc
+    join yj_card_venue cv on cc.cardid = cv.cardid
+    join yj_schedule s on s.scheduleid = #{scheduleid} and s.flag = '0'
+    left join yj_course c on c.courseid = cc.courseid and c.flag = '0'
+    where s.coursename = c.coursename and s.venueid = cv.venueid)
+    and uc.cardstatus != '9' and uc.quota != 0
+  </select>
+
+  <update id="changeCardStatus" parameterType="String">
+    update yj_user_card set cardstatus = #{status} where payid = #{payid}
+  </update>
+  
+  <update id="autoReduceTerm">
+    update yj_user_card set term = term - 1
+    where cardstatus = '1'
+  </update>
+  
+  <update id="autoExpire">
+    update yj_user_card set cardstatus = '9'
+    where term = 0
+  </update>
+
+  <update id="autoOpenCard">
+    update yj_user_card set cardstatus = '1'
+    where openterm = 0
+  </update>
+
+  <update id="autoReduceOpenTerm">
+    update yj_user_card set openterm = openterm -1
+    where openterm != null and cardstatus = '0'
+  </update>
+
+  <update id="withdrawCard" parameterType="String">
+    update yj_user_card set givetime = null,cardid = null, cardstatus = null,cardno = null,term = null,openterm = null,
+    quota = null
+    where payid = #{payid}
+  </update>
+
+  <select id="getCardsByUser" parameterType="String" resultType="com.example.yjyy.result.business.CardOrderResult">
+    select uc.payid,c.cardname,uc.cardno,uc.quota,uc.term,uc.cardstatus,uc.givetime,u.username giveuser
+    from yj_user_card uc
+    left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
+    left join sys_user u on u.userid = uc.giveuser and u.flag = '0'
+    where uc.userid = #{userid}
+  </select>
+</mapper>

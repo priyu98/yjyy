@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.VenueMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.Venue">
+    <constructor>
+      <idArg column="VENUEID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="VENUENAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CONTACT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="VENUETYPE" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="MOBILE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PHONE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="AREA" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="QRCODE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="MAPMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="MODIFYUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="MODIFYDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="FLAG" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    VENUEID, VENUENAME, CONTACT, VENUETYPE, MOBILE, PHONE, AREA, ADDRESS, QRCODE, REMARK, 
+    MAPMARK, CREATEUSER, CREATEDATE, MODIFYUSER, MODIFYDATE, FLAG
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yj_venue
+    where VENUEID = #{venueid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from yj_venue
+    where VENUEID = #{venueid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.Venue">
+    insert into yj_venue (VENUEID, VENUENAME, CONTACT, 
+      VENUETYPE, MOBILE, PHONE, 
+      AREA, ADDRESS, QRCODE, 
+      REMARK, MAPMARK, CREATEUSER, 
+      CREATEDATE, MODIFYUSER, MODIFYDATE, 
+      FLAG)
+    values (#{venueid,jdbcType=VARCHAR}, #{venuename,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{venuetype,jdbcType=CHAR}, #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{mapmark,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{modifyuser,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{flag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.Venue">
+    insert into yj_venue
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="venueid != null">
+        VENUEID,
+      </if>
+      <if test="venuename != null">
+        VENUENAME,
+      </if>
+      <if test="contact != null">
+        CONTACT,
+      </if>
+      <if test="venuetype != null">
+        VENUETYPE,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="phone != null">
+        PHONE,
+      </if>
+      <if test="area != null">
+        AREA,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+      <if test="qrcode != null">
+        QRCODE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="mapmark != null">
+        MAPMARK,
+      </if>
+      <if test="createuser != null">
+        CREATEUSER,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="venueid != null">
+        #{venueid,jdbcType=VARCHAR},
+      </if>
+      <if test="venuename != null">
+        #{venuename,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="venuetype != null">
+        #{venuetype,jdbcType=CHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcode != null">
+        #{qrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="mapmark != null">
+        #{mapmark,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.Venue">
+    update yj_venue
+    <set>
+      <if test="venuename != null">
+        VENUENAME = #{venuename,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        CONTACT = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="venuetype != null">
+        VENUETYPE = #{venuetype,jdbcType=CHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        AREA = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcode != null">
+        QRCODE = #{qrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="mapmark != null">
+        MAPMARK = #{mapmark,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=CHAR},
+      </if>
+    </set>
+    where VENUEID = #{venueid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.Venue">
+    update yj_venue
+    set VENUENAME = #{venuename,jdbcType=VARCHAR},
+      CONTACT = #{contact,jdbcType=VARCHAR},
+      VENUETYPE = #{venuetype,jdbcType=CHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      AREA = #{area,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      QRCODE = #{qrcode,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      MAPMARK = #{mapmark,jdbcType=VARCHAR},
+      CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      FLAG = #{flag,jdbcType=CHAR}
+    where VENUEID = #{venueid,jdbcType=VARCHAR}
+  </update>
+
+  <update id="deleteVenue" parameterType="String" >
+    update yj_venue set flag='1' where venueid = #{venueid}
+  </update>
+
+  <select id="getVenueList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.VenuePageResult">
+    select * from(
+    select A.*,count(1) over() as CNT,ceil(count(1) over()/#{pagesize}) as PAGE,(@rownum := @rownum + 1) as RN from(
+    select
+    <include refid="Base_Column_List"/>
+    from yj_venue
+    where flag='0'
+    <if test="venuename!=null and venuename!=''">
+      and venuename like concat('%',#{venuename},'%')
+    </if>
+    order by createdate
+    )A,(SELECT @rownum := 0) AS r
+    )A WHERE RN&gt;=#{begin} and RN&lt;=#{end}
+  </select>
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.Order">
+    <constructor>
+      <idArg column="ORDERID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USERID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="SCHEDULEID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ORDERTIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="UPDATEREAD" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="CHECKINTIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="ORDERSTATUS" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="PAYID" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORDERID, USERID, SCHEDULEID, ORDERTIME, UPDATEREAD, CHECKINTIME, ORDERSTATUS, PAYID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yj_order
+    where ORDERID = #{orderid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from yj_order
+    where ORDERID = #{orderid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.Order">
+    insert into yj_order (ORDERID, USERID, SCHEDULEID, 
+      ORDERTIME, UPDATEREAD, CHECKINTIME, 
+      ORDERSTATUS, PAYID)
+    values (#{orderid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{scheduleid,jdbcType=VARCHAR}, 
+      #{ordertime,jdbcType=TIMESTAMP}, #{updateread,jdbcType=CHAR}, #{checkintime,jdbcType=TIMESTAMP}, 
+      #{orderstatus,jdbcType=CHAR}, #{payid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.Order">
+    insert into yj_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        ORDERID,
+      </if>
+      <if test="userid != null">
+        USERID,
+      </if>
+      <if test="scheduleid != null">
+        SCHEDULEID,
+      </if>
+      <if test="ordertime != null">
+        ORDERTIME,
+      </if>
+      <if test="updateread != null">
+        UPDATEREAD,
+      </if>
+      <if test="checkintime != null">
+        CHECKINTIME,
+      </if>
+      <if test="orderstatus != null">
+        ORDERSTATUS,
+      </if>
+      <if test="payid != null">
+        PAYID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleid != null">
+        #{scheduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="ordertime != null">
+        #{ordertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateread != null">
+        #{updateread,jdbcType=CHAR},
+      </if>
+      <if test="checkintime != null">
+        #{checkintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderstatus != null">
+        #{orderstatus,jdbcType=CHAR},
+      </if>
+      <if test="payid != null">
+        #{payid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.Order">
+    update yj_order
+    <set>
+      <if test="userid != null">
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleid != null">
+        SCHEDULEID = #{scheduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="ordertime != null">
+        ORDERTIME = #{ordertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateread != null">
+        UPDATEREAD = #{updateread,jdbcType=CHAR},
+      </if>
+      <if test="checkintime != null">
+        CHECKINTIME = #{checkintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderstatus != null">
+        ORDERSTATUS = #{orderstatus,jdbcType=CHAR},
+      </if>
+      <if test="payid != null">
+        PAYID = #{payid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORDERID = #{orderid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.Order">
+    update yj_order
+    set USERID = #{userid,jdbcType=VARCHAR},
+      SCHEDULEID = #{scheduleid,jdbcType=VARCHAR},
+      ORDERTIME = #{ordertime,jdbcType=TIMESTAMP},
+      UPDATEREAD = #{updateread,jdbcType=CHAR},
+      CHECKINTIME = #{checkintime,jdbcType=TIMESTAMP},
+      ORDERSTATUS = #{orderstatus,jdbcType=CHAR},
+      PAYID = #{payid,jdbcType=VARCHAR}
+    where ORDERID = #{orderid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getOrderList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.OrderPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select o.orderid, u1.username, s.coursename, v.venuename, d.label coursetype, u2.username courseteacher, s.duration,
+    cr.classroomname classroom, s.studentnumber,
+    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname
+    from yj_order o
+    left join sys_user u1 on u1.userid = o.userid and u1.flag = '0'
+    left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'
+    left join sys_user u2 on u2.userid = s.courseteacher and u2.flag = '0'
+    left join sys_dict d on d.key = s.coursetype and d.type = 'course_type' and d.flag = '0'
+    left join yj_venue v on v.venueid = s.venueid and v.flag = '0'
+    left join yj_classroom cr on cr.classroomid = s.classroom and cr.flag = '0'
+    left join yj_user_card ur on ur.payid = o.payid
+    left join yj_card c on c.cardid = ur.cardid and c.flag = '0'
+    where 1=1
+    <if test="userid != null and userid != ''">
+      and o.userid = #{userid}
+    </if>
+    <if test="scheduleid != null and scheduleid != ''">
+      and o.scheduleid = #{scheduleid}
+    </if>
+    <if test="orderstatus != null and orderstatus != ''">
+      and o.orderstatus = #{orderstatus}
+    </if>
+    order by ordertime desc
+    limit #{begin},#{end}
+    )A
+  </select>
+
+  <update id="changeOrderStatus" parameterType="String">
+    update yj_order set orderstatus = #{status} where orderid = #{orderid}
+  </update>
+  
+  <update id="checkin" parameterType="com.example.yjyy.entity.dto.CheckinDto">
+    update yj_order set checkintime = #{date},orderstatus = '1001' where
+    <foreach collection="orderlist" item="orderid" separator="or">
+      orderid = #{orderid}
+    </foreach>
+  </update>
+  
+  <select id="getStudentList" parameterType="String" resultType="com.example.yjyy.entity.User">
+    select o.userid,u.username,u.userphone,u.userphoto,u.sex
+    from yj_order o
+    left join sys_user u on u.userid = o.userid
+    where o.scheduleid = #{scheduleid} and o.orderstatus = '1000'
+  </select>
+
+  <select id="getOrderRecordList" parameterType="com.example.yjyy.entity.dto.UserDto" resultType="com.example.yjyy.result.business.PageResult.OrderRecordPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select o.orderid, s.coursename, u.username teacher, d.label coursetype, cr.classroomname classroom, o.checkintime, c.cardname,uc.cardno
+    from yj_order o
+    left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'
+    left join sys_user u on u.userid = s.courseteacher and u.flag = '0'
+    left join sys_dict d on d.key = s.coursetype and d.type = 'course_type' and d.flag = '0'
+    left join yj_classroom cr on cr.classroomid = s.classroom and cr.flag = '0'
+    left join yj_user_card uc on uc.payid = o.payid
+    left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
+    where (o.orderstatus = '1001' or o.orderstatus = '1002') and o.userid = #{userid}
+    order by o.checkintime desc
+    limit #{begin},#{end}
+    )A
+  </select>
+</mapper>

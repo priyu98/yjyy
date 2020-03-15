@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.CardMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.Card">
+    <constructor>
+      <idArg column="CARDID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CARDNAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CARDTYPE" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="PRICE" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="TERM" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="QUOTA" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="CREDIT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="AVAILABLETIME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="AUTORENEWTIME" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="MOSTSTUDENT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="CREATEUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="MODIFYUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="MODIFYDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="FLAG" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    CARDID, CARDNAME, CARDTYPE, PRICE, TERM, QUOTA, CREDIT, AVAILABLETIME, AUTORENEWTIME, 
+    MOSTSTUDENT, CREATEUSER, CREATEDATE, MODIFYUSER, MODIFYDATE, FLAG
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yj_card
+    where CARDID = #{cardid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from yj_card
+    where CARDID = #{cardid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.Card">
+    insert into yj_card (CARDID, CARDNAME, CARDTYPE, 
+      PRICE, TERM, QUOTA, 
+      CREDIT, AVAILABLETIME, AUTORENEWTIME, 
+      MOSTSTUDENT, CREATEUSER, CREATEDATE, 
+      MODIFYUSER, MODIFYDATE, FLAG
+      )
+    values (#{cardid,jdbcType=VARCHAR}, #{cardname,jdbcType=VARCHAR}, #{cardtype,jdbcType=CHAR}, 
+      #{price,jdbcType=DECIMAL}, #{term,jdbcType=INTEGER}, #{quota,jdbcType=INTEGER}, 
+      #{credit,jdbcType=INTEGER}, #{availabletime,jdbcType=VARCHAR}, #{autorenewtime,jdbcType=INTEGER}, 
+      #{moststudent,jdbcType=INTEGER}, #{createuser,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{modifyuser,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, #{flag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.Card">
+    insert into yj_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cardid != null">
+        CARDID,
+      </if>
+      <if test="cardname != null">
+        CARDNAME,
+      </if>
+      <if test="cardtype != null">
+        CARDTYPE,
+      </if>
+      <if test="price != null">
+        PRICE,
+      </if>
+      <if test="term != null">
+        TERM,
+      </if>
+      <if test="quota != null">
+        QUOTA,
+      </if>
+      <if test="credit != null">
+        CREDIT,
+      </if>
+      <if test="availabletime != null">
+        AVAILABLETIME,
+      </if>
+      <if test="autorenewtime != null">
+        AUTORENEWTIME,
+      </if>
+      <if test="moststudent != null">
+        MOSTSTUDENT,
+      </if>
+      <if test="createuser != null">
+        CREATEUSER,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cardid != null">
+        #{cardid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardname != null">
+        #{cardname,jdbcType=VARCHAR},
+      </if>
+      <if test="cardtype != null">
+        #{cardtype,jdbcType=CHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="term != null">
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="quota != null">
+        #{quota,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="availabletime != null">
+        #{availabletime,jdbcType=VARCHAR},
+      </if>
+      <if test="autorenewtime != null">
+        #{autorenewtime,jdbcType=INTEGER},
+      </if>
+      <if test="moststudent != null">
+        #{moststudent,jdbcType=INTEGER},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.Card">
+    update yj_card
+    <set>
+      <if test="cardname != null">
+        CARDNAME = #{cardname,jdbcType=VARCHAR},
+      </if>
+      <if test="cardtype != null">
+        CARDTYPE = #{cardtype,jdbcType=CHAR},
+      </if>
+      <if test="price != null">
+        PRICE = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="term != null">
+        TERM = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="quota != null">
+        QUOTA = #{quota,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null">
+        CREDIT = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="availabletime != null">
+        AVAILABLETIME = #{availabletime,jdbcType=VARCHAR},
+      </if>
+      <if test="autorenewtime != null">
+        AUTORENEWTIME = #{autorenewtime,jdbcType=INTEGER},
+      </if>
+      <if test="moststudent != null">
+        MOSTSTUDENT = #{moststudent,jdbcType=INTEGER},
+      </if>
+      <if test="createuser != null">
+        CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=CHAR},
+      </if>
+    </set>
+    where CARDID = #{cardid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.Card">
+    update yj_card
+    set CARDNAME = #{cardname,jdbcType=VARCHAR},
+      CARDTYPE = #{cardtype,jdbcType=CHAR},
+      PRICE = #{price,jdbcType=DECIMAL},
+      TERM = #{term,jdbcType=INTEGER},
+      QUOTA = #{quota,jdbcType=INTEGER},
+      CREDIT = #{credit,jdbcType=INTEGER},
+      AVAILABLETIME = #{availabletime,jdbcType=VARCHAR},
+      AUTORENEWTIME = #{autorenewtime,jdbcType=INTEGER},
+      MOSTSTUDENT = #{moststudent,jdbcType=INTEGER},
+      CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      FLAG = #{flag,jdbcType=CHAR}
+    where CARDID = #{cardid,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="insertCardVenue" parameterType="com.example.yjyy.entity.dto.CardDto">
+    <if test="venuelist != null and venuelist.size() != 0">
+      insert into yj_card_venue(cardid,venueid) values
+      <foreach collection="venuelist" item="venueid" separator=",">
+        (#{cardid},#{venueid})
+      </foreach>
+    </if>
+  </insert>
+
+  <insert id="insertCardCourse" parameterType="com.example.yjyy.entity.dto.CardDto">
+    <if test="courselist != null and courselist.size() != 0">
+      insert into yj_card_course(cardid,courseid) values
+      <foreach collection="courselist" item="courseid" separator=",">
+        (#{cardid},#{courseid})
+      </foreach>
+    </if>
+  </insert>
+
+  <select id="getVenueListByCardId" parameterType="String" resultType="com.example.yjyy.entity.Venue">
+    select venueid,venuename from yj_venue
+    where venueid in (select venueid from yj_card_venue where cardid = #{cardid}) and flag = '0'
+  </select>
+
+  <select id="getCourseListByCardId" parameterType="String" resultType="com.example.yjyy.entity.Course">
+    select courseid,coursename from yj_course
+    where courseid in (select courseid from yj_card_course where cardid = #{cardid}) and flag = '0'
+  </select>
+
+  <select id="getCardList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.CardPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select c.cardid,c.cardname,d.label cardtype,c.term,c.quota,c.price
+    from yj_card c
+    left join sys_dict d on d.key = c.cardtype and d.type = 'card_type' and d.flag = '0'
+    where c.flag = '0'
+    <if test="cardname != null and cardname != ''">
+      and c.cardname like concat('%',#{cardname},'%')
+    </if>
+    <if test="cardtype != null and cardtype != ''">
+      and c.cardtype = #{cardtype}
+    </if>
+    order by c.createdate desc
+    limit #{begin},#{end}
+    )A
+  </select>
+
+  <delete id="deleteCardVenue" parameterType="String">
+    delete from yj_card_venue where cardid = #{cardid}
+  </delete>
+
+  <delete id="deleteCardCourse" parameterType="String">
+    delete from yj_card_course where cardid = #{cardid}
+  </delete>
+
+</mapper>

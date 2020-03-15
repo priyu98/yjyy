@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.ScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.Schedule">
+    <constructor>
+      <idArg column="SCHEDULEID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="COURSENAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="VENUEID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="COURSETYPE" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="COURSETEACHER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DURATION" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="CLASSROOM" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STUDENTNUMBER" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="COURSECOLOR" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="COURSEDIFFICULTY" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="SUBSIDY" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="STUDENTLIMIT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="EXTRAOPTION" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STARTTIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CREATEUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="MODIFYUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="MODIFYDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="FLAG" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="ENDTIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="COURSEPHOTO" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    SCHEDULEID, COURSENAME, VENUEID, COURSETYPE, COURSETEACHER, DURATION, CLASSROOM, 
+    STUDENTNUMBER, COURSECOLOR, COURSEDIFFICULTY, SUBSIDY, STUDENTLIMIT, EXTRAOPTION, 
+    STARTTIME, CREATEUSER, CREATEDATE, MODIFYUSER, MODIFYDATE, FLAG, ENDTIME, COURSEPHOTO, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yj_schedule
+    where SCHEDULEID = #{scheduleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from yj_schedule
+    where SCHEDULEID = #{scheduleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.Schedule">
+    insert into yj_schedule (SCHEDULEID, COURSENAME, VENUEID, 
+      COURSETYPE, COURSETEACHER, DURATION, 
+      CLASSROOM, STUDENTNUMBER, COURSECOLOR, 
+      COURSEDIFFICULTY, SUBSIDY, STUDENTLIMIT, 
+      EXTRAOPTION, STARTTIME, CREATEUSER, 
+      CREATEDATE, MODIFYUSER, MODIFYDATE, 
+      FLAG, ENDTIME, COURSEPHOTO, REMARK)
+    values (#{scheduleid,jdbcType=VARCHAR}, #{coursename,jdbcType=VARCHAR}, #{venueid,jdbcType=VARCHAR}, 
+      #{coursetype,jdbcType=CHAR}, #{courseteacher,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, 
+      #{classroom,jdbcType=VARCHAR}, #{studentnumber,jdbcType=INTEGER}, #{coursecolor,jdbcType=VARCHAR}, 
+      #{coursedifficulty,jdbcType=CHAR}, #{subsidy,jdbcType=DECIMAL}, #{studentlimit,jdbcType=INTEGER}, 
+      #{extraoption,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{modifyuser,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{flag,jdbcType=CHAR}, #{endtime,jdbcType=TIMESTAMP}, #{coursephoto,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.Schedule">
+    insert into yj_schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scheduleid != null">
+        SCHEDULEID,
+      </if>
+      <if test="coursename != null">
+        COURSENAME,
+      </if>
+      <if test="venueid != null">
+        VENUEID,
+      </if>
+      <if test="coursetype != null">
+        COURSETYPE,
+      </if>
+      <if test="courseteacher != null">
+        COURSETEACHER,
+      </if>
+      <if test="duration != null">
+        DURATION,
+      </if>
+      <if test="classroom != null">
+        CLASSROOM,
+      </if>
+      <if test="studentnumber != null">
+        STUDENTNUMBER,
+      </if>
+      <if test="coursecolor != null">
+        COURSECOLOR,
+      </if>
+      <if test="coursedifficulty != null">
+        COURSEDIFFICULTY,
+      </if>
+      <if test="subsidy != null">
+        SUBSIDY,
+      </if>
+      <if test="studentlimit != null">
+        STUDENTLIMIT,
+      </if>
+      <if test="extraoption != null">
+        EXTRAOPTION,
+      </if>
+      <if test="starttime != null">
+        STARTTIME,
+      </if>
+      <if test="createuser != null">
+        CREATEUSER,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+      <if test="endtime != null">
+        ENDTIME,
+      </if>
+      <if test="coursephoto != null">
+        COURSEPHOTO,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scheduleid != null">
+        #{scheduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="coursename != null">
+        #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="venueid != null">
+        #{venueid,jdbcType=VARCHAR},
+      </if>
+      <if test="coursetype != null">
+        #{coursetype,jdbcType=CHAR},
+      </if>
+      <if test="courseteacher != null">
+        #{courseteacher,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=INTEGER},
+      </if>
+      <if test="classroom != null">
+        #{classroom,jdbcType=VARCHAR},
+      </if>
+      <if test="studentnumber != null">
+        #{studentnumber,jdbcType=INTEGER},
+      </if>
+      <if test="coursecolor != null">
+        #{coursecolor,jdbcType=VARCHAR},
+      </if>
+      <if test="coursedifficulty != null">
+        #{coursedifficulty,jdbcType=CHAR},
+      </if>
+      <if test="subsidy != null">
+        #{subsidy,jdbcType=DECIMAL},
+      </if>
+      <if test="studentlimit != null">
+        #{studentlimit,jdbcType=INTEGER},
+      </if>
+      <if test="extraoption != null">
+        #{extraoption,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=CHAR},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coursephoto != null">
+        #{coursephoto,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.Schedule">
+    update yj_schedule
+    <set>
+      <if test="coursename != null">
+        COURSENAME = #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="venueid != null">
+        VENUEID = #{venueid,jdbcType=VARCHAR},
+      </if>
+      <if test="coursetype != null">
+        COURSETYPE = #{coursetype,jdbcType=CHAR},
+      </if>
+      <if test="courseteacher != null">
+        COURSETEACHER = #{courseteacher,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null">
+        DURATION = #{duration,jdbcType=INTEGER},
+      </if>
+      <if test="classroom != null">
+        CLASSROOM = #{classroom,jdbcType=VARCHAR},
+      </if>
+      <if test="studentnumber != null">
+        STUDENTNUMBER = #{studentnumber,jdbcType=INTEGER},
+      </if>
+      <if test="coursecolor != null">
+        COURSECOLOR = #{coursecolor,jdbcType=VARCHAR},
+      </if>
+      <if test="coursedifficulty != null">
+        COURSEDIFFICULTY = #{coursedifficulty,jdbcType=CHAR},
+      </if>
+      <if test="subsidy != null">
+        SUBSIDY = #{subsidy,jdbcType=DECIMAL},
+      </if>
+      <if test="studentlimit != null">
+        STUDENTLIMIT = #{studentlimit,jdbcType=INTEGER},
+      </if>
+      <if test="extraoption != null">
+        EXTRAOPTION = #{extraoption,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        STARTTIME = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuser != null">
+        CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=CHAR},
+      </if>
+      <if test="endtime != null">
+        ENDTIME = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coursephoto != null">
+        COURSEPHOTO = #{coursephoto,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where SCHEDULEID = #{scheduleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.Schedule">
+    update yj_schedule
+    set COURSENAME = #{coursename,jdbcType=VARCHAR},
+      VENUEID = #{venueid,jdbcType=VARCHAR},
+      COURSETYPE = #{coursetype,jdbcType=CHAR},
+      COURSETEACHER = #{courseteacher,jdbcType=VARCHAR},
+      DURATION = #{duration,jdbcType=INTEGER},
+      CLASSROOM = #{classroom,jdbcType=VARCHAR},
+      STUDENTNUMBER = #{studentnumber,jdbcType=INTEGER},
+      COURSECOLOR = #{coursecolor,jdbcType=VARCHAR},
+      COURSEDIFFICULTY = #{coursedifficulty,jdbcType=CHAR},
+      SUBSIDY = #{subsidy,jdbcType=DECIMAL},
+      STUDENTLIMIT = #{studentlimit,jdbcType=INTEGER},
+      EXTRAOPTION = #{extraoption,jdbcType=VARCHAR},
+      STARTTIME = #{starttime,jdbcType=TIMESTAMP},
+      CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      FLAG = #{flag,jdbcType=CHAR},
+      ENDTIME = #{endtime,jdbcType=TIMESTAMP}
+    where SCHEDULEID = #{scheduleid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getScheduleList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.SchedulePageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select s.scheduleid, s.coursename, d.label coursetype, u.username courseteacher, s.duration, c.classroomname classroom, s.studentnumber, s.coursecolor,
+    s.coursedifficulty, s.subsidy, s.starttime, s.endtime, s.coursephoto, s.remark, v.venuename, #{starttime} startdate, #{endtime} enddate
+    from yj_schedule s
+    left join sys_user u on u.userid = s.courseteacher and u.flag = '0'
+    left join sys_dict d on d.type = 'course_type' and d.key = s.coursetype and d.flag = '0'
+    left join yj_classroom c on c.classroomid = s.classroom and c.flag = '0'
+    left join yj_venue v on v.venueid = s.venueid and v.flag = '0'
+    where s.flag = '0'
+    <if test="coursename != null and coursename != ''">
+      and s.coursename like concat('%',#{coursename},'%')
+    </if>
+    <if test="starttime != null and starttime != ''">
+      and s.starttime &gt;= str_to_date(#{starttime},'%Y-%m-%d')
+    </if>
+    <if test="endtime != null and endtime != ''">
+      and s.endtime &lt; str_to_date(#{endtime},'%Y-%m-%d')+1
+    </if>
+    order by starttime
+    limit #{begin},#{end}
+    )A
+  </select>
+  
+  <update id="cancelOrderByAdmin" parameterType="String">
+    update yj_order set orderstatus = '2000'
+    where scheduleid = #{scheduleid}
+  </update>
+</mapper>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.example.yjyy.entity.User">
+    <constructor>
+      <idArg column="USERID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USERNAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USERPHONE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPENID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USERBIRTHDAY" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="USERPHOTO" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="SEX" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="CREATEUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATEDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="MODIFYUSER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="MODIFYDATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="INVITECODE" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="CREDIT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="COIN" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="FLAG" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="VENUEID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="EMPLOYEETYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="TEACHERTYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="EMPLOYEESTATUS" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    USERID, USERNAME, USERPHONE, OPENID, PASSWORD, USERBIRTHDAY, USERPHOTO, SEX, CREATEUSER, 
+    CREATEDATE, MODIFYUSER, MODIFYDATE, ADDRESS, INVITECODE, CREDIT, COIN, FLAG, VENUEID, 
+    EMPLOYEETYPE, TEACHERTYPE, REMARK, EMPLOYEESTATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where USERID = #{userid,jdbcType=VARCHAR} and flag = '0'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_user
+    where USERID = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.yjyy.entity.User">
+    insert into sys_user (USERID, USERNAME, USERPHONE, 
+      OPENID, PASSWORD, USERBIRTHDAY, 
+      USERPHOTO, SEX, CREATEUSER, 
+      CREATEDATE, MODIFYUSER, MODIFYDATE, 
+      ADDRESS, INVITECODE, CREDIT, 
+      COIN, FLAG, VENUEID, EMPLOYEETYPE, 
+      TEACHERTYPE, REMARK, EMPLOYEESTATUS
+      )
+    values (#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{userphone,jdbcType=VARCHAR}, 
+      #{openid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{userbirthday,jdbcType=DATE}, 
+      #{userphoto,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{createuser,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{modifyuser,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{address,jdbcType=VARCHAR}, #{invitecode,jdbcType=CHAR}, #{credit,jdbcType=INTEGER}, 
+      #{coin,jdbcType=INTEGER}, #{flag,jdbcType=CHAR}, #{venueid,jdbcType=VARCHAR}, #{employeetype,jdbcType=VARCHAR}, 
+      #{teachertype,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{employeestatus,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.yjyy.entity.User">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        USERID,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="userphone != null">
+        USERPHONE,
+      </if>
+      <if test="openid != null">
+        OPENID,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="userbirthday != null">
+        USERBIRTHDAY,
+      </if>
+      <if test="userphoto != null">
+        USERPHOTO,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="createuser != null">
+        CREATEUSER,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+      <if test="invitecode != null">
+        INVITECODE,
+      </if>
+      <if test="credit != null">
+        CREDIT,
+      </if>
+      <if test="coin != null">
+        COIN,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+      <if test="venueid != null">
+        VENUEID,
+      </if>
+      <if test="employeetype != null">
+        EMPLOYEETYPE,
+      </if>
+      <if test="teachertype != null">
+        TEACHERTYPE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="employeestatus != null">
+        EMPLOYEESTATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null">
+        #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userbirthday != null">
+        #{userbirthday,jdbcType=DATE},
+      </if>
+      <if test="userphoto != null">
+        #{userphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="invitecode != null">
+        #{invitecode,jdbcType=CHAR},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="coin != null">
+        #{coin,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=CHAR},
+      </if>
+      <if test="venueid != null">
+        #{venueid,jdbcType=VARCHAR},
+      </if>
+      <if test="employeetype != null">
+        #{employeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="teachertype != null">
+        #{teachertype,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="employeestatus != null">
+        #{employeestatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.yjyy.entity.User">
+    update sys_user
+    <set>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null">
+        USERPHONE = #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        OPENID = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userbirthday != null">
+        USERBIRTHDAY = #{userbirthday,jdbcType=DATE},
+      </if>
+      <if test="userphoto != null">
+        USERPHOTO = #{userphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="createuser != null">
+        CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="invitecode != null">
+        INVITECODE = #{invitecode,jdbcType=CHAR},
+      </if>
+      <if test="credit != null">
+        CREDIT = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="coin != null">
+        COIN = #{coin,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=CHAR},
+      </if>
+      <if test="venueid != null">
+        VENUEID = #{venueid,jdbcType=VARCHAR},
+      </if>
+      <if test="employeetype != null">
+        EMPLOYEETYPE = #{employeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="teachertype != null">
+        TEACHERTYPE = #{teachertype,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="employeestatus != null">
+        EMPLOYEESTATUS = #{employeestatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where USERID = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.yjyy.entity.User">
+    update sys_user
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      USERPHONE = #{userphone,jdbcType=VARCHAR},
+      OPENID = #{openid,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      USERBIRTHDAY = #{userbirthday,jdbcType=DATE},
+      USERPHOTO = #{userphoto,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=CHAR},
+      CREATEUSER = #{createuser,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=TIMESTAMP},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      INVITECODE = #{invitecode,jdbcType=CHAR},
+      CREDIT = #{credit,jdbcType=INTEGER},
+      COIN = #{coin,jdbcType=INTEGER},
+      FLAG = #{flag,jdbcType=CHAR},
+      VENUEID = #{venueid,jdbcType=VARCHAR},
+      EMPLOYEETYPE = #{employeetype,jdbcType=VARCHAR},
+      TEACHERTYPE = #{teachertype,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      EMPLOYEESTATUS = #{employeestatus,jdbcType=CHAR}
+    where USERID = #{userid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="loginAdmin" parameterType="String" resultType="com.example.yjyy.entity.User">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where username = #{username} and password = #{password} and flag='0'
+  </select>
+
+  <select id="getAllUserList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.UserPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select u.userid, u.username, u.userphone, u.userphoto, u.userbirthday, u.sex, u.address, u.invitecode, u.credit,
+    u.coin, v.venuename,
+    u.employeetype, u.teachertype, u.employeestatus, r.rolename
+    from sys_user u
+    join sys_user_role ur on ur.userid = u.userid
+    left join sys_role r on r.roleid = ur.roleid and r.flag = '0'
+    left join yj_venue v on v.venueid = u.venueid and v.flag = '0'
+    where u.flag = '0'
+    <if test="username != null and username != ''">
+      and username like concat('%',#{username},'%')
+    </if>
+    <if test="roleid != null and roleid != ''">
+      and ur.roleid = #{roleid}
+    </if>
+    <if test="venueid != null and venueid != ''">
+      and u.venueid = #{venueid}
+    </if>
+    order by u.createdate desc
+    limit #{begin},#{end}
+    )A
+  </select>
+
+  <select id="getEmployeeList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.UserPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select u.userid, u.username, u.userphone, u.userphoto, u.userbirthday, u.sex, u.address, u.invitecode, u.credit,
+    u.coin, v.venuename,
+    u.employeetype, u.teachertype, u.employeestatus, r.rolename
+    from sys_user u
+    join sys_user_role ur on ur.userid = u.userid and (ur.roleid = 'c71e232b87a74dafa8b216deafffb969' or ur.roleid = '2b266670fefa4e06b86cebc682a83237')
+    left join sys_role r on r.roleid = ur.roleid and r.flag = '0'
+    left join yj_venue v on v.venueid = u.venueid and v.flag = '0'
+    where u.flag = '0'
+    <if test="username != null and username != ''">
+      and username like concat('%',#{username},'%')
+    </if>
+    <if test="venueid != null and venueid != ''">
+      and u.venueid = #{venueid}
+    </if>
+    <if test="employeestatus != null and employeestatus != ''">
+      and u.employeestatus = #{employeestatus}
+    </if>
+    order by u.createdate desc
+    limit #{begin},#{end}
+    )A
+  </select>
+
+  <select id="getAccessToken" resultType="String">
+    select access_token from wx_access_token
+  </select>
+
+  <update id="updateAccessToken" parameterType="String">
+    update wx_access_token set access_token = #{access_token}
+  </update>
+
+  <select id="getUserByOpenid" parameterType="String" resultType="String">
+    select userid from sys_user where openid = #{openid} and flag = '0'
+  </select>
+  
+  <insert id="insertSessionKey" parameterType="String">
+    insert into wx_session_key(openid,session_key,unionid) values(#{openid},#{session_key},#{unionid})
+  </insert>
+
+  <select id="getSessionKey" parameterType="String" resultType="String">
+    select session_key from wx_session_key where openid = #{openid}
+  </select>
+</mapper>
