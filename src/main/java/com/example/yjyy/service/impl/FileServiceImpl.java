@@ -64,7 +64,7 @@ public class FileServiceImpl implements FileService {
                 result.setMessage("文件不能为空！");
                 result.setResult(WebRestResult.FAILURE);
             }
-            result.setMessage(filePath);
+            result.setMessage("39.106.171.39:8080/pictures"+filePath);
             result.setResult(WebRestResult.SUCCESS);
 
         }catch (Exception e) {
