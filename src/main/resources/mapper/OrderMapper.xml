@@ -168,8 +168,8 @@
     </foreach>
   </update>
   
-  <select id="getStudentList" parameterType="String" resultType="com.example.yjyy.entity.User">
-    select o.userid,u.username,u.userphone,u.userphoto,u.sex
+  <select id="getStudentList" parameterType="String" resultType="com.example.yjyy.result.business.OrderUserResult">
+    select o.orderid,o.userid,u.username,u.userphone,u.userphoto,u.sex
     from yj_order o
     left join sys_user u on u.userid = o.userid
     where o.scheduleid = #{scheduleid} and o.orderstatus = '1000'

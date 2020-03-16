@@ -10,6 +10,7 @@ import com.example.yjyy.entity.dto.CheckinDto;
 import com.example.yjyy.entity.dto.UserDto;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
+import com.example.yjyy.result.business.OrderUserResult;
 import com.example.yjyy.result.business.PageResult.MemberPageResult;
 import com.example.yjyy.result.business.PageResult.OrderPageResult;
 import com.example.yjyy.result.business.PageResult.OrderRecordPageResult;
@@ -112,9 +113,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResult<User> getStudentList(String scheduleid) {
-        PageResult<User> result = new PageResult<>();
-        List<User> list = orderMapper.getStudentList(scheduleid);
+    public PageResult<OrderUserResult> getStudentList(String scheduleid) {
+        PageResult<OrderUserResult> result = new PageResult<>();
+        List<OrderUserResult> list = orderMapper.getStudentList(scheduleid);
         if(list.size()>=0){
             result.setTotal(list.size());
             result.setRows(list);

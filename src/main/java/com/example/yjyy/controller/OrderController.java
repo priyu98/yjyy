@@ -4,6 +4,7 @@ import com.example.yjyy.entity.User;
 import com.example.yjyy.interceptor.AppToken;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
+import com.example.yjyy.result.business.OrderUserResult;
 import com.example.yjyy.result.business.PageResult.MemberPageResult;
 import com.example.yjyy.result.business.PageResult.OrderPageResult;
 import com.example.yjyy.result.business.PageResult.OrderRecordPageResult;
@@ -62,8 +63,8 @@ public class OrderController {
     @AppToken
     @CrossOrigin
     @GetMapping("getStudentList")
-    public PageResult<User> getStudentList(String scheduleid){
-        PageResult<User> result = orderService.getStudentList(scheduleid);
+    public PageResult<OrderUserResult> getStudentList(String scheduleid){
+        PageResult<OrderUserResult> result = orderService.getStudentList(scheduleid);
         return result;
     }
 

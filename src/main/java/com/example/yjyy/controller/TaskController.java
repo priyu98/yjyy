@@ -22,8 +22,8 @@ public class TaskController {
     @Autowired
     private UserMapper userMapper;
 
-    private final String appid = "";
-    private final String secret = "";
+    private final String appid = "wxf275b0bcada2b33b";
+    private final String secret = "f9088de1385f71c020c8fc436a5ea072";
 
     @Scheduled(cron = "0 0 1 * * ?")
     @Transactional

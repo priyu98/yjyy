@@ -35,8 +35,8 @@ import java.util.Map;
 public class HttpUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class.getName());
-    private static final String appid = "";
-    private static final String secret = "";
+    private static final String appid = "wxf275b0bcada2b33b";
+    private static final String secret = "f9088de1385f71c020c8fc436a5ea072";
 
 
     private static PoolingHttpClientConnectionManager connManager = null;
@@ -205,4 +205,12 @@ public class HttpUtils {
         return doGet("https://api.weixin.qq.com/sns/jscode2session?",param);
     }
 
+    public static void main(String args[]){
+        Map<String,String> param = new HashMap<>();
+        param.put("appid",appid);
+        param.put("secret",secret);
+        param.put("grant_type","client_credential");
+        String result = HttpUtils.doGet("https://api.weixin.qq.com/cgi-bin/token?",param);
+        System.out.println(result);
+    }
 }

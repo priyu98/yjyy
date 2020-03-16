@@ -4,6 +4,7 @@ import com.example.yjyy.entity.Order;
 import com.example.yjyy.entity.User;
 import com.example.yjyy.entity.dto.CheckinDto;
 import com.example.yjyy.entity.dto.UserDto;
+import com.example.yjyy.result.business.OrderUserResult;
 import com.example.yjyy.result.business.PageResult.OrderPageResult;
 import com.example.yjyy.result.business.PageResult.OrderRecordPageResult;
 import org.apache.ibatis.annotations.Param;
@@ -36,7 +37,7 @@ public interface OrderMapper {
 
     int checkin(CheckinDto checkinDto);
 
-    List<User> getStudentList(String scheduleid);
+    List<OrderUserResult> getStudentList(String scheduleid);
     //获取消费记录
     List<OrderRecordPageResult> getOrderRecordList(UserDto userDto);
 }
