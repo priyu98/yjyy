@@ -205,6 +205,15 @@ public class HttpUtils {
         return doGet("https://api.weixin.qq.com/sns/jscode2session?",param);
     }
 
+    //微信程序发送订阅消息
+    public static String wxSendMsg(String access_token,String touser,String template_id,Map<String,Object> data){
+        Map<String,Object> param = new HashMap<>();
+        param.put("touser",touser);
+        param.put("template_id",template_id);
+        param.put("data",data);
+        return doPost("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,param);
+    }
+
     public static void main(String args[]){
         Map<String,String> param = new HashMap<>();
         param.put("appid",appid);

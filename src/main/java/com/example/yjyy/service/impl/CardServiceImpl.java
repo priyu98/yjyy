@@ -3,6 +3,7 @@ package com.example.yjyy.service.impl;
 import com.example.yjyy.dao.CardMapper;
 import com.example.yjyy.dao.CourseMapper;
 import com.example.yjyy.dao.PayCardMapper;
+import com.example.yjyy.dao.UserMapper;
 import com.example.yjyy.entity.Card;
 import com.example.yjyy.entity.PayCard;
 import com.example.yjyy.entity.dto.CardDto;
@@ -11,6 +12,7 @@ import com.example.yjyy.result.WebRestResult;
 import com.example.yjyy.result.business.PageResult.CardPageResult;
 import com.example.yjyy.result.business.PageResult.MemberPageResult;
 import com.example.yjyy.service.CardService;
+import com.example.yjyy.util.HttpUtils;
 import com.example.yjyy.util.Tools;
 import com.example.yjyy.util.UUIDUtil;
 import org.slf4j.Logger;
@@ -20,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -30,6 +34,9 @@ public class CardServiceImpl implements CardService {
 
     @Autowired
     private PayCardMapper payCardMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     private final Logger logger = LoggerFactory.getLogger("orderlog");
 
@@ -113,6 +120,7 @@ public class CardServiceImpl implements CardService {
     public WebRestResult payCard(PayCard payCard) {
         WebRestResult result = new WebRestResult();
         payCard.setPayid(UUIDUtil.randomUUID());
+        //线上支付直接发卡，补充卡号、有效期、发卡时间、额度
         if(payCard.getCardid() != null){
             payCard.setCardno(Tools.date2Str(new Date(),"yyyyMMdd")+Tools.autoGenericCode(payCardMapper.countNumToday(Tools.date2Str(new Date(),"yyyy-MM-dd"))+1,4));
             payCard.setTerm(cardMapper.selectByPrimaryKey(payCard.getCardid()).getTerm());
@@ -120,6 +128,24 @@ public class CardServiceImpl implements CardService {
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
         }
         if(payCardMapper.insert(payCard)==1){
+            //直接发卡微信提醒
+            if(payCard.getCardid()!=null){
+                String openid = userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid();
+                if(openid != null && !"".equals(openid)) {
+                    String access_token = userMapper.getAccessToken();
+                    String template_id = "wmFTYifkYlVwHu8hiBW6p6IXJzNT6zVow0eT56qRKxY";
+                    String cardname = cardMapper.selectByPrimaryKey(payCard.getCardid()).getCardname();
+                    String starttime = Tools.date2Str(new Date(), "yyyy-MM-dd");
+                    Map<String, Object> data = new HashMap<>();
+                    Map<String, String> map1 = new HashMap<>();
+                    Map<String, String> map2 = new HashMap<>();
+                    map1.put("value", cardname);
+                    map2.put("value", starttime);
+                    data.put("thing1", map1);
+                    data.put("date2", map2);
+                    HttpUtils.wxSendMsg(access_token, openid, template_id, data);
+                }
+            }
             result.setResult(WebRestResult.SUCCESS);
             logger.info("会员卡购买["+"订单号:"+payCard.getPayid()+" 用户:"+payCard.getUserid()+" 会员卡:"+payCard.getCardid()+" 支付方式："+
                     payCard.getPaystatus()+" 金额:"+payCard.getPayment());
@@ -155,6 +181,22 @@ public class CardServiceImpl implements CardService {
         payCard.setGivetime(new Date());
         payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
         if(payCardMapper.updateByPrimaryKeySelective(payCard)==1){
+            //线下支管理员手动发卡微信提醒
+            String openid = userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid();
+            if(openid != null && !"".equals(openid)) {
+                String access_token = userMapper.getAccessToken();
+                String template_id = "wmFTYifkYlVwHu8hiBW6p6IXJzNT6zVow0eT56qRKxY";
+                String cardname = cardMapper.selectByPrimaryKey(payCard.getCardid()).getCardname();
+                String starttime = Tools.date2Str(new Date(), "yyyy-MM-dd");
+                Map<String, Object> data = new HashMap<>();
+                Map<String, String> map1 = new HashMap<>();
+                Map<String, String> map2 = new HashMap<>();
+                map1.put("value", cardname);
+                map2.put("value", starttime);
+                data.put("thing1", map1);
+                data.put("date2", map2);
+                HttpUtils.wxSendMsg(access_token, openid, template_id, data);
+            }
             result.setResult(WebRestResult.SUCCESS);
         }
         else{

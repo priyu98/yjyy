@@ -1,24 +1,36 @@
 package com.example.yjyy.service.impl;
 
+import com.example.yjyy.dao.ClassRoomMapper;
+import com.example.yjyy.dao.OrderMapper;
 import com.example.yjyy.dao.ScheduleMapper;
+import com.example.yjyy.dao.UserMapper;
 import com.example.yjyy.entity.Schedule;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
+import com.example.yjyy.result.business.OrderUserResult;
 import com.example.yjyy.result.business.PageResult.SchedulePageResult;
 import com.example.yjyy.service.ScheduleService;
+import com.example.yjyy.util.HttpUtils;
 import com.example.yjyy.util.Tools;
 import com.example.yjyy.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private ScheduleMapper scheduleMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private ClassRoomMapper classRoomMapper;
 
     @Override
     public WebRestResult addSchedule(Schedule schedule) {
@@ -43,6 +55,32 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.setScheduleid(scheduleid);
         schedule.setFlag("1");
         if(scheduleMapper.updateByPrimaryKeySelective(schedule)==1){
+            schedule = scheduleMapper.selectByPrimaryKey(schedule.getScheduleid());
+            List<OrderUserResult> list = orderMapper.getStudentList(schedule.getScheduleid());
+            String access_token = userMapper.getAccessToken();
+            String template_id = "QGKbbQxl2JIyswe8dKkUegv8gL3ccNGltDHGCe6nV8s";
+            Map<String, Object> data = new HashMap<>();
+            Map<String, String> map1 = new HashMap<>();
+            Map<String, String> map2 = new HashMap<>();
+            Map<String, String> map3 = new HashMap<>();
+            Map<String, String> map4 = new HashMap<>();
+            Map<String, String> map5 = new HashMap<>();
+            map1.put("value",schedule.getCoursename());
+            map2.put("value",userMapper.selectByPrimaryKey(schedule.getCourseteacher()).getUsername());
+            map3.put("value",Tools.date2Str(schedule.getStarttime(),"yyyy-MM-dd hh:mm"));
+            map4.put("value",classRoomMapper.selectByPrimaryKey(schedule.getClassroom()).getClassroomname());
+            map5.put("value","管理员取消课程");
+            data.put("name1",map1);
+            data.put("name2",map2);
+            data.put("date3",map3);
+            data.put("thing4",map4);
+            data.put("thing5",map5);
+            for(OrderUserResult user : list) {
+                String openid = userMapper.selectByPrimaryKey(user.getUserid()).getOpenid();
+                if(!"".equals(openid) && openid != null) {
+                    HttpUtils.wxSendMsg(access_token,openid,template_id,data);
+                }
+            }
             scheduleMapper.cancelOrderByAdmin(scheduleid);
             result.setResult(WebRestResult.SUCCESS);
         }
@@ -58,6 +96,32 @@ public class ScheduleServiceImpl implements ScheduleService {
         WebRestResult result = new WebRestResult();
         schedule.setModifydate(new Date());
         if(scheduleMapper.updateByPrimaryKeySelective(schedule)==1){
+            schedule = scheduleMapper.selectByPrimaryKey(schedule.getScheduleid());
+            List<OrderUserResult> list = orderMapper.getStudentList(schedule.getScheduleid());
+            String access_token = userMapper.getAccessToken();
+            String template_id = "vwXkFVzzhLyYCAAd3d87A4zwyuim_9asD73svlF7g_U";
+            Map<String, Object> data = new HashMap<>();
+            Map<String, String> map1 = new HashMap<>();
+            Map<String, String> map2 = new HashMap<>();
+            Map<String, String> map3 = new HashMap<>();
+            Map<String, String> map4 = new HashMap<>();
+            Map<String, String> map5 = new HashMap<>();
+            map1.put("value",schedule.getCoursename());
+            map2.put("value",userMapper.selectByPrimaryKey(schedule.getCourseteacher()).getUsername());
+            map3.put("value",Tools.date2Str(schedule.getStarttime(),"yyyy-MM-dd hh:mm"));
+            map4.put("value",classRoomMapper.selectByPrimaryKey(schedule.getClassroom()).getClassroomname());
+            map5.put("value","您预约的课程发生了变更");
+            data.put("name1",map1);
+            data.put("name2",map2);
+            data.put("date3",map3);
+            data.put("thing4",map4);
+            data.put("thing5",map5);
+            for(OrderUserResult user : list) {
+                String openid = userMapper.selectByPrimaryKey(user.getUserid()).getOpenid();
+                if(!"".equals(openid) && openid != null) {
+                    HttpUtils.wxSendMsg(access_token,openid,template_id,data);
+                }
+            }
             result.setResult(WebRestResult.SUCCESS);
         }
         else{
