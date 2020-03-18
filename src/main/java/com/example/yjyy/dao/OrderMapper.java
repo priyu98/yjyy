@@ -40,4 +40,6 @@ public interface OrderMapper {
     List<OrderUserResult> getStudentList(String scheduleid);
     //获取消费记录
     List<OrderRecordPageResult> getOrderRecordList(UserDto userDto);
+    String findOrderByUserSchedule(@Param("userid") String userid,
+                                   @Param("scheduleid") String scheduleid);
 }

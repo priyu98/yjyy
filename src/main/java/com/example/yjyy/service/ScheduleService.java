@@ -11,6 +11,6 @@ public interface ScheduleService {
     WebRestResult addSchedule(Schedule schedule);
     WebRestResult deleteSchedule(String scheduleid);
     WebRestResult updateSchedule(Schedule schedule);
-    PageResult<SchedulePageResult> getScheduleList(String coursename,String starttime,String endtime,int page,int pagesize);
+    PageResult<SchedulePageResult> getScheduleList(String coursename,String starttime,String endtime,int page,int pagesize,String userid);
     PageResult<List<SchedulePageResult>> getWeekScheduleList(String date);
 }

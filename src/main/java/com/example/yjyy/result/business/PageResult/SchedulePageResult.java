@@ -18,6 +18,15 @@ public class SchedulePageResult extends Page {
     private String coursedifficulty;
     private String coursephoto;
     private String startdate;
+    private String orderflag;
+
+    public String getOrderflag() {
+        return orderflag;
+    }
+
+    public void setOrderflag(String orderflag) {
+        this.orderflag = orderflag;
+    }
 
     public String getStartdate() {
         return startdate;

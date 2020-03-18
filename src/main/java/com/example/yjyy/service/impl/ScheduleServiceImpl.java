@@ -132,13 +132,22 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public PageResult<SchedulePageResult> getScheduleList(String coursename, String starttime, String endtime, int page, int pagesize) {
+    public PageResult<SchedulePageResult> getScheduleList(String coursename, String starttime, String endtime, int page, int pagesize,String userid) {
         PageResult<SchedulePageResult> result = new PageResult<>();
         int begin = (page-1) * pagesize;
         int end = pagesize;
 
         List<SchedulePageResult> list = scheduleMapper.getScheduleList(coursename,starttime,endtime,begin,end,pagesize);
         if(list.size()>0){
+            if(!"".equals(userid) && userid != null) {
+                for (SchedulePageResult schedulePageResult : list) {
+                    String orderid = orderMapper.findOrderByUserSchedule(userid,schedulePageResult.getScheduleid());
+                    if(!"".equals(orderid) && orderid != null)
+                        schedulePageResult.setOrderflag("1");
+                    else
+                        schedulePageResult.setOrderflag("0");
+                }
+            }
             result.setTotal(list.get(0).getCnt());
             result.setPageCount(list.get(0).getPage());
             result.setRows(list);

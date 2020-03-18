@@ -190,4 +190,9 @@
     limit #{begin},#{end}
     )A
   </select>
+
+  <select id="findOrderByUserSchedule" parameterType="String" resultType="String">
+    select orderid from yj_order
+    where userid = #{userid} and scheduleid = #{scheduleid} and orderstatus = '1000'
+  </select>
 </mapper>

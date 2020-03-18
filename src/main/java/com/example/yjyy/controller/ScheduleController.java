@@ -44,8 +44,8 @@ public class ScheduleController {
     @AppToken
     @CrossOrigin
     @RequestMapping("getScheduleList")
-    public PageResult<SchedulePageResult> getScheduleList(String coursename,String starttime,String endtime,int page,int pagesize){
-        PageResult<SchedulePageResult> result = scheduleService.getScheduleList(coursename,starttime,endtime,page,pagesize);
+    public PageResult<SchedulePageResult> getScheduleList(String coursename,String starttime,String endtime,int page,int pagesize,String userid){
+        PageResult<SchedulePageResult> result = scheduleService.getScheduleList(coursename,starttime,endtime,page,pagesize,userid);
         return result;
     }
 
