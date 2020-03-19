@@ -44,4 +44,6 @@ public interface UserMapper {
                          @Param("session_key") String session_key,
                          @Param("unionid") String unionid);
     String getSessionKey(String openid);
+    int updateSessionKey(@Param("session_key") String session_key,
+                         @Param("openid") String openid);
 }

@@ -38,16 +38,17 @@ public class TaskController {
         }
     }
 
-    /*@Scheduled(cron = "0 0 /1 * * ?")
+    @Scheduled(cron = "0 43 0/1 * * ?")
     public void updateAccessToken(){
         Map<String,String> param = new HashMap<>();
         param.put("appid",appid);
         param.put("secret",secret);
         param.put("grant_type","client_credential");
         String result = HttpUtils.doGet("https://api.weixin.qq.com/cgi-bin/token?",param);
+        System.out.println(result);
         JSONObject jsonObject = new JSONObject(result);
-        if(jsonObject.getString("errcode").equals("0"))
+        if(jsonObject.has("access_token"))
             userMapper.updateAccessToken(jsonObject.getString("access_token"));
-    }*/
+    }
 
 }

@@ -4,6 +4,7 @@ import com.example.yjyy.dao.PayCardMapper;
 import com.example.yjyy.dao.RoleMapper;
 import com.example.yjyy.dao.UserMapper;
 import com.example.yjyy.entity.User;
+import com.example.yjyy.entity.dto.LoginUserDto;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
 import com.example.yjyy.result.business.CardOrderResult;
@@ -148,24 +149,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResult loginUser(String code, String username, String userphoto, String sex, String encryptedData, String iv) {
+    public UserResult loginUser(LoginUserDto loginUserDto) {
+        String code = loginUserDto.getCode();
+        String username = loginUserDto.getUsername();
+        String userphoto = loginUserDto.getUserphoto();
+        String sex = loginUserDto.getSex();
+        String encryptedData = loginUserDto.getEncryptedData();
+        String iv = loginUserDto.getIv();
         UserResult result = new UserResult();
         String response = HttpUtils.code2Session(code);
         JSONObject jsonObject = new JSONObject(response);
-        if(jsonObject.getString("errcode").equals("0")){
+        if(jsonObject.has("openid")){
             String openid = jsonObject.getString("openid");
             String userid = userDao.getUserByOpenid(openid);
             if(!"".equals(userid) && userid != null){
                 User user = userDao.selectByPrimaryKey(userid);
                 String rolename = roleDao.getRoleNameByUser(user.getUserid());
                 String token = JwtUtils.generateToken(user.getUserid());
+                userDao.updateSessionKey(jsonObject.getString("session_key"),openid);
                 result.setUser(user);
                 result.setRolename(rolename);
                 result.setToken(token);
                 result.setResult(WebRestResult.SUCCESS);
             }
             else{
-                userDao.insertSessionKey(jsonObject.getString("openid"),jsonObject.getString("session_key"),jsonObject.getString("unionid"));
+                userDao.insertSessionKey(jsonObject.getString("openid"),jsonObject.getString("session_key"),null);
                 User user = new User();
                 userid = UUIDUtil.randomUUID();
                 user.setUserid(userid);
@@ -174,7 +182,7 @@ public class UserServiceImpl implements UserService {
                 user.setOpenid(openid);
                 if(!"".equals(username) && username != null){
                     user.setUsername(username);
-                    user.setUserphone(userphoto);
+                    user.setUserphoto(userphoto);
                     user.setSex(sex);
                 }
                 else{

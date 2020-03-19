@@ -368,4 +368,8 @@
   <select id="getSessionKey" parameterType="String" resultType="String">
     select session_key from wx_session_key where openid = #{openid}
   </select>
+
+  <update id="updateSessionKey" parameterType="String">
+    update wx_session_key set session_key = #{session_key} where openid = #{openid}
+  </update>
 </mapper>

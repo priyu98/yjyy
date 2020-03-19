@@ -2,6 +2,7 @@ package com.example.yjyy.controller;
 
 import com.alibaba.druid.sql.PagerUtils;
 import com.example.yjyy.entity.User;
+import com.example.yjyy.entity.dto.LoginUserDto;
 import com.example.yjyy.interceptor.AppToken;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
@@ -164,8 +165,8 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("loginUser")
-    public UserResult loginUser(String code,String username,String userphoto,String sex,String encryptedData,String iv){
-        UserResult result = userService.loginUser(code,username,userphoto,sex,encryptedData,iv);
+    public UserResult loginUser(@RequestBody LoginUserDto loginUserDto){
+        UserResult result = userService.loginUser(loginUserDto);
         return result;
     }
 }

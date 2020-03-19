@@ -13,8 +13,6 @@ import java.io.StringWriter;
 
 /**
  * @Description:全局异常处理类
- * @Author:HuangXuanxiang
- * @Date: 2019/7/29
  **/
 @RestControllerAdvice
 public class GlobalExceptionHandler {

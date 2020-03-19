@@ -1,6 +1,7 @@
 package com.example.yjyy.service;
 
 import com.example.yjyy.entity.User;
+import com.example.yjyy.entity.dto.LoginUserDto;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
 import com.example.yjyy.result.business.PageResult.UserPageResult;
@@ -16,5 +17,5 @@ public interface UserService {
     WebRestResult deleteUser(String userid);
     WebRestResult dismissionUser(String userid);
     UserItemResult getUserItem(String userid);
-    UserResult loginUser(String code,String username,String userphoto,String sex,String encryptedData,String iv);
+    UserResult loginUser(LoginUserDto loginUserDto);
 }

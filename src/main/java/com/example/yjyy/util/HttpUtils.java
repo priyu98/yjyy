@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -215,11 +216,6 @@ public class HttpUtils {
     }
 
     public static void main(String args[]){
-        Map<String,String> param = new HashMap<>();
-        param.put("appid",appid);
-        param.put("secret",secret);
-        param.put("grant_type","client_credential");
-        String result = HttpUtils.doGet("https://api.weixin.qq.com/cgi-bin/token?",param);
-        System.out.println(result);
+        System.out.println(code2Session("033I9LtL0f5jPb2AmAwL0B6qtL0I9LtP"));
     }
 }
