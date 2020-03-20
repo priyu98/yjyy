@@ -209,4 +209,26 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
+    @Override
+    public WebRestResult updateUserPhone(LoginUserDto loginUserDto) {
+        WebRestResult result = new WebRestResult();
+        if(loginUserDto.getUserid()==null && "".equals(loginUserDto.getUserid())){
+            result.setResult(WebRestResult.FAILURE);
+            result.setMessage("userid不能为空");
+        }
+        else{
+            User user = userDao.selectByPrimaryKey(loginUserDto.getUserid());
+            JSONObject jsonObject = new JSONObject(Tools.decrypt(userDao.getSessionKey(user.getOpenid()),loginUserDto.getIv(),loginUserDto.getEncryptedData()));
+            user.setUserphone(jsonObject.getString("phoneNumber"));
+            if(userDao.updateByPrimaryKeySelective(user)==1){
+                result.setResult(WebRestResult.SUCCESS);
+            }
+            else{
+                result.setResult(WebRestResult.FAILURE);
+                result.setMessage("更新手机号失败");
+            }
+        }
+        return result;
+    }
 }

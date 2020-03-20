@@ -169,4 +169,11 @@ public class UserController {
         UserResult result = userService.loginUser(loginUserDto);
         return result;
     }
+
+    @CrossOrigin
+    @PostMapping("updateUserPhone")
+    public WebRestResult updateUserPhone(@RequestBody LoginUserDto loginUserDto){
+        WebRestResult result = userService.updateUserPhone(loginUserDto);
+        return result;
+    }
 }

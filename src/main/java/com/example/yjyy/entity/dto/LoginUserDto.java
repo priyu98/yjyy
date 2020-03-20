@@ -7,6 +7,15 @@ public class LoginUserDto {
     private String userphoto;
     private String encryptedData;
     private String iv;
+    private String userid;
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 
     public String getCode() {
         return code;

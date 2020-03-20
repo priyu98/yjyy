@@ -18,4 +18,5 @@ public interface UserService {
     WebRestResult dismissionUser(String userid);
     UserItemResult getUserItem(String userid);
     UserResult loginUser(LoginUserDto loginUserDto);
+    WebRestResult updateUserPhone(LoginUserDto loginUserDto);
 }
