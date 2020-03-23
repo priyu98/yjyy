@@ -35,11 +35,11 @@
     insert into yj_user_card (PAYID, USERID, GIVEUSER, 
       GIVETIME, PAYMENT, PAYSTATUS, 
       CARDID, CARDNO, CARDSTATUS, 
-      TERM, OPENTERM, QUOTA)
+      TERM, OPENTERM, QUOTA, PAYFLAG)
     values (#{payid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{giveuser,jdbcType=VARCHAR}, 
       #{givetime,jdbcType=TIMESTAMP}, #{payment,jdbcType=DECIMAL}, #{paystatus,jdbcType=CHAR}, 
       #{cardid,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}, #{cardstatus,jdbcType=CHAR}, 
-      #{term,jdbcType=INTEGER}, #{openterm,jdbcType=INTEGER},#{quota,jdbcType=INTEGER})
+      #{term,jdbcType=INTEGER}, #{openterm,jdbcType=INTEGER},#{quota,jdbcType=INTEGER},#{payflag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.yjyy.entity.PayCard">
     insert into yj_user_card
@@ -156,6 +156,9 @@
       <if test="quota != null">
         QUOTA = #{quota,jdbcType=INTEGER},
       </if>
+      <if test="payflag !- null">
+        PAYFLAG = #{payflag,jdbcType=INTEGER},
+      </if>
     </set>
     where PAYID = #{payid,jdbcType=VARCHAR}
   </update>
@@ -186,7 +189,7 @@
     left join sys_user u1 on u1.userid = uc.userid and u1.flag = '0'
     left join sys_user u2 on u2.userid = uc.giveuser and u2.flag = '0'
     left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
-    where 1=1
+    where uc.payflag = 1
     <if test="username != null and username != ''">
       and u1.username like concat('%',#{username},'%')
     </if>
@@ -214,7 +217,7 @@
     join yj_schedule s on s.scheduleid = #{scheduleid} and s.flag = '0'
     left join yj_course c on c.courseid = cc.courseid and c.flag = '0'
     where s.coursename = c.coursename and s.venueid = cv.venueid)
-    and uc.cardstatus != '9' and uc.quota != 0
+    and uc.cardstatus != '9' and uc.quota != 0 and uc.payflag = 1
   </select>
 
   <update id="changeCardStatus" parameterType="String">
@@ -223,7 +226,7 @@
   
   <update id="autoReduceTerm">
     update yj_user_card set term = term - 1
-    where cardstatus = '1'
+    where cardstatus = '1' and payflag = 1
   </update>
   
   <update id="autoExpire">
@@ -238,7 +241,7 @@
 
   <update id="autoReduceOpenTerm">
     update yj_user_card set openterm = openterm -1
-    where openterm != null and cardstatus = '0'
+    where openterm != null and cardstatus = '0' and payflag = 1
   </update>
 
   <update id="withdrawCard" parameterType="String">
@@ -252,6 +255,6 @@
     from yj_user_card uc
     left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
     left join sys_user u on u.userid = uc.giveuser and u.flag = '0'
-    where uc.userid = #{userid}
+    where uc.userid = #{userid} and uc.payflag = 1
   </select>
 </mapper>

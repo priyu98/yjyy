@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class HttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class.getName());
     private static final String appid = "wxf275b0bcada2b33b";
     private static final String secret = "f9088de1385f71c020c8fc436a5ea072";
+    private static final String mch_id = "1";
+    private static final String key = "1";
 
 
     private static PoolingHttpClientConnectionManager connManager = null;
@@ -215,7 +218,33 @@ public class HttpUtils {
         return doPost("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,param);
     }
 
+    //微信统一下单api
+    public static String wxUnifiedOrder(String payid, String openid, BigDecimal price){
+        String nonce_str = String.valueOf(Tools.getRandomNum());
+        String body = "育瑜伽-会员卡购买";
+        String out_trade_no = payid;
+        int total_fee = (int)(price.floatValue()*100);
+        String spbill_create_ip = "39.106.171.39";
+        String notify_url = "https://yuyoga.club/yjyy/wxController/wxReturnOrder";
+        String trade_type = "JSAPI";
+        Map<String,Object> param = new HashMap<>();
+        param.put("appid",appid);
+        param.put("mch_id",mch_id);
+        param.put("nonce_str",nonce_str);
+        param.put("body",body);
+        param.put("out_trade_no",out_trade_no);
+        param.put("total_fee",total_fee);
+        param.put("spbill_create_ip",spbill_create_ip);
+        param.put("notify_url",notify_url);
+        param.put("trade_type",trade_type);
+        param.put("openid",openid);
+        String str = Tools.map2string(param)+"&key="+key;
+        String sign = MD5Util.getMD5Info(str);
+        param.put("sign",sign);
+        return doPost("https://api.mch.weixin.qq.com/pay/unifiedorder",param);
+    }
+
     public static void main(String args[]){
-        System.out.println(code2Session("033I9LtL0f5jPb2AmAwL0B6qtL0I9LtP"));
+        wxUnifiedOrder("1","2",new BigDecimal(9.99));
     }
 }

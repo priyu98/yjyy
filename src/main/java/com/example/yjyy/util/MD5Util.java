@@ -61,7 +61,7 @@ public class MD5Util
 	}
 
 	public static void main(String args[]){
-		String str = "123456";
+		String str = "appid=wxd930ea5d5a258f4f&body=test&device_info=1000&mch_id=10000100&nonce_str=ibuaiVcKdpRxkhJA&key=192006250b4c09247ec02edce69f6a2d";
 		System.out.println(MD5Encode(str));
 		System.out.println(getMD5Info(str));
 	}

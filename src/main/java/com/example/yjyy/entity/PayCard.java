@@ -28,6 +28,16 @@ public class PayCard {
 
     private Integer quota;
 
+    private Integer payflag;
+
+    public Integer getPayflag() {
+        return payflag;
+    }
+
+    public void setPayflag(Integer payflag) {
+        this.payflag = payflag;
+    }
+
     public Integer getQuota() {
         return quota;
     }

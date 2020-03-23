@@ -15,6 +15,7 @@ import com.example.yjyy.service.CardService;
 import com.example.yjyy.util.HttpUtils;
 import com.example.yjyy.util.Tools;
 import com.example.yjyy.util.UUIDUtil;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,15 +121,37 @@ public class CardServiceImpl implements CardService {
     public WebRestResult payCard(PayCard payCard) {
         WebRestResult result = new WebRestResult();
         payCard.setPayid(UUIDUtil.randomUUID());
+        payCard.setPayflag(1);
         //线上支付直接发卡，补充卡号、有效期、发卡时间、额度
         if(payCard.getCardid() != null){
+            payCard.setPayflag(0);
             payCard.setCardno(Tools.date2Str(new Date(),"yyyyMMdd")+Tools.autoGenericCode(payCardMapper.countNumToday(Tools.date2Str(new Date(),"yyyy-MM-dd"))+1,4));
             payCard.setTerm(cardMapper.selectByPrimaryKey(payCard.getCardid()).getTerm());
             payCard.setGivetime(new Date());
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
+            /*
+            JSONObject jsonObject = new JSONObject(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),cardMapper.selectByPrimaryKey(payCard.getCardid()).getPrice()));
+            if(jsonObject.getString("return_code").equals("SUCCESS")){
+                if(jsonObject.getString("result_code").equals("SUCCESS")){
+                    result.setMessage(jsonObject.getString("prepay_id"));
+                }
+                else{
+                    result.setResult(WebRestResult.FAILURE);
+                    result.setMessage(jsonObject.getString("err_code_des"));
+                    return result;
+                }
+            }
+            else{
+                result.setResult(WebRestResult.FAILURE);
+                result.setMessage(jsonObject.getString("return_msg"));
+                return result;
+            }
+
+             */
         }
         if(payCardMapper.insert(payCard)==1){
             //直接发卡微信提醒
+            /*
             if(payCard.getCardid()!=null){
                 String openid = userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid();
                 if(openid != null && !"".equals(openid)) {
@@ -146,6 +169,7 @@ public class CardServiceImpl implements CardService {
                     HttpUtils.wxSendMsg(access_token, openid, template_id, data);
                 }
             }
+            */
             result.setResult(WebRestResult.SUCCESS);
             logger.info("会员卡购买["+"订单号:"+payCard.getPayid()+" 用户:"+payCard.getUserid()+" 会员卡:"+payCard.getCardid()+" 支付方式："+
                     payCard.getPaystatus()+" 金额:"+payCard.getPayment());

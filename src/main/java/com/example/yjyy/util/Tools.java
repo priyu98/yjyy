@@ -2,6 +2,7 @@ package com.example.yjyy.util;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -16,6 +17,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 import java.security.*;
 
 public class Tools {
@@ -487,11 +490,37 @@ public class Tools {
 		hasInited = true;
 	}
 
+	public static String getWxXml(HttpServletRequest request) {
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new InputStreamReader(
+					(ServletInputStream) request
+							.getInputStream()));
+
+			String line = null;
+			StringBuilder sb = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			return sb.toString();
+			// sb为微信返回的xml
+		} catch (IOException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+
+	public static String map2string(Map<String,Object> map){
+		StringBuilder str = new StringBuilder();
+		String[] sortedKeys = map.keySet().toArray(new String[]{});
+		Arrays.sort(sortedKeys);// 排序请求参数
+		for(String key: sortedKeys){
+			str.append(key).append("=").append(map.get(key)).append("&");
+		}
+		return str.toString().substring(0,str.lastIndexOf("&"));
+	}
 	public static void main(String[] args) {
-		String session_key = "itRHTLKZT4Y2RgD1j7ZKrA==";
-		String iv = "TRLN7C/SjcVOEEmr/v2plw==";
-		String encryptData = "B9tDuMNTkPeQxCfBVfwqipO9f1WpjS5GDjun3AzyWUX96kSkgFS/v1QtfTnzlpKXmbyLZ6xeRZAKDasViSYFpITMsDnWTEvCq2QJXpKS0NMzPQkacNqOSCuW6JWAnPuTo1w8KCXzFjX/57lQQCuAQxAYxhnWlzbgxDnAyf/L470MmF6DT0PWjj1o1HOfSHWO79ltWtjLJtvVNcFCUhkFDlLrlO43OKEnLn+9EaclYPeBGXBhETfHcBNMNF9oJrlGvBJUE9FU0PJrr7/bk4y8Hm1fu94fKP9rDSgm/qcdwXQP0ME6U7AdAyS6LKDrSlZmHRmou3WubBtCuM6T+hGo4RrQijuU5AZTH5pv8slwYIXsk0naMZbKhMPSSRKh+Kpe4IoI5Haua3XPY8BSFQMFWXoh88hiJVPBCi4fOf6JnALC3B4hGURRoKb5PS5E24bGCxfh29BcIQTZWYgnStvCuRWuzNixfgVzmddbgHTqPcY=";
-		String decrypt = decrypt(session_key, iv, encryptData);
-		System.out.println(decrypt);
+		BigDecimal bigDecimal = new BigDecimal(99.99);
+		System.out.println((int)(bigDecimal.floatValue()*100));
 	}
 }
