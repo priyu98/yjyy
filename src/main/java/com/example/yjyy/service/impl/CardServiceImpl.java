@@ -129,7 +129,7 @@ public class CardServiceImpl implements CardService {
             payCard.setTerm(cardMapper.selectByPrimaryKey(payCard.getCardid()).getTerm());
             payCard.setGivetime(new Date());
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
-            /*
+            /*微信支付逻辑暂时不用
             JSONObject jsonObject = new JSONObject(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),cardMapper.selectByPrimaryKey(payCard.getCardid()).getPrice()));
             if(jsonObject.getString("return_code").equals("SUCCESS")){
                 if(jsonObject.getString("result_code").equals("SUCCESS")){
