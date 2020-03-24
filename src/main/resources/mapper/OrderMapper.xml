@@ -169,10 +169,12 @@
   </update>
   
   <select id="getStudentList" parameterType="String" resultType="com.example.yjyy.result.business.OrderUserResult">
-    select o.orderid,o.userid,u.username,u.userphone,u.userphoto,u.sex
+    select o.orderid,o.userid,u.username,u.userphone,u.userphoto,u.sex,o.orderstatus,o.ordertime,c.cardname,ur.quota
     from yj_order o
     left join sys_user u on u.userid = o.userid
-    where o.scheduleid = #{scheduleid} and o.orderstatus = '1000'
+    left join yj_user_card ur on ur.payid = o.payid
+    left join yj_card c on c.cardid = ur.cardid and c.flag = '0'
+    where o.scheduleid = #{scheduleid} and (o.orderstatus = '1000' or o.orderstatus = '1001')
   </select>
 
   <select id="getOrderRecordList" parameterType="com.example.yjyy.entity.dto.UserDto" resultType="com.example.yjyy.result.business.PageResult.OrderRecordPageResult">

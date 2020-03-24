@@ -156,7 +156,7 @@
       <if test="quota != null">
         QUOTA = #{quota,jdbcType=INTEGER},
       </if>
-      <if test="payflag !- null">
+      <if test="payflag != null">
         PAYFLAG = #{payflag,jdbcType=INTEGER},
       </if>
     </set>
@@ -241,7 +241,7 @@
 
   <update id="autoReduceOpenTerm">
     update yj_user_card set openterm = openterm -1
-    where openterm != null and cardstatus = '0' and payflag = 1
+    where openterm is not null and cardstatus = '0' and payflag = 1
   </update>
 
   <update id="withdrawCard" parameterType="String">

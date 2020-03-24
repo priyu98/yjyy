@@ -1,5 +1,10 @@
 package com.example.yjyy.result.business;
 
+import com.example.yjyy.entity.PayCard;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class OrderUserResult {
     private String orderid;
     private String userid;
@@ -7,6 +12,44 @@ public class OrderUserResult {
     private String userphone;
     private String userphoto;
     private String sex;
+    private String orderstatus;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private Date ordertime;
+    private String cardname;
+
+    public String getOrderstatus() {
+        return orderstatus;
+    }
+
+    public void setOrderstatus(String orderstatus) {
+        this.orderstatus = orderstatus;
+    }
+
+    public Date getOrdertime() {
+        return ordertime;
+    }
+
+    public void setOrdertime(Date ordertime) {
+        this.ordertime = ordertime;
+    }
+
+    public String getCardname() {
+        return cardname;
+    }
+
+    public void setCardname(String cardname) {
+        this.cardname = cardname;
+    }
+
+    public int getQuota() {
+        return quota;
+    }
+
+    public void setQuota(int quota) {
+        this.quota = quota;
+    }
+
+    private int quota;
 
     public String getOrderid() {
         return orderid;
