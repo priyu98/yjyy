@@ -255,8 +255,8 @@
       and c.coursename like concat('%',#{coursename},'%')
     </if>
     order by c.createdate desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <select id="getCardListByCourseId" parameterType="String" resultType="com.example.yjyy.result.business.CardResult">

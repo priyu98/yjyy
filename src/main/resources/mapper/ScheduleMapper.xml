@@ -310,8 +310,8 @@
       and s.endtime &lt; str_to_date(#{endtime},'%Y-%m-%d')+1
     </if>
     order by starttime
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
   
   <update id="cancelOrderByAdmin" parameterType="String">

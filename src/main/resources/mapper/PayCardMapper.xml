@@ -203,8 +203,8 @@
       and uc.paystatus = #{paystatus}
     </if>
     order by uc.givetime desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
   
   <select id="getUseableCards" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.MemberPageResult">

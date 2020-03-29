@@ -321,8 +321,8 @@
       and u.venueid = #{venueid}
     </if>
     order by u.createdate desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <select id="getEmployeeList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.UserPageResult">
@@ -345,8 +345,8 @@
       and u.employeestatus = #{employeestatus}
     </if>
     order by u.createdate desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <select id="getAccessToken" resultType="String">

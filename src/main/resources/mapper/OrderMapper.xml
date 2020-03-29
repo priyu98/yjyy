@@ -153,8 +153,8 @@
       and o.orderstatus = #{orderstatus}
     </if>
     order by ordertime desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <update id="changeOrderStatus" parameterType="String">
@@ -189,8 +189,8 @@
     left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
     where (o.orderstatus = '1001' or o.orderstatus = '1002') and o.userid = #{userid}
     order by o.checkintime desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <select id="findOrderByUserSchedule" parameterType="String" resultType="String">

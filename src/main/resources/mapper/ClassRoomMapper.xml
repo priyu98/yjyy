@@ -158,7 +158,7 @@
       and cr.classroomname like concat('%',#{classroomname},'%')
     </if>
     order by cr.createdate desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 </mapper>

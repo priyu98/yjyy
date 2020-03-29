@@ -253,8 +253,8 @@
       and c.cardtype = #{cardtype}
     </if>
     order by c.createdate desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <delete id="deleteCardVenue" parameterType="String">

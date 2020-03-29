@@ -228,8 +228,7 @@
   </update>
 
   <select id="getVenueList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.VenuePageResult">
-    select * from(
-    select A.*,count(1) over() as CNT,ceil(count(1) over()/#{pagesize}) as PAGE,(@rownum := @rownum + 1) as RN from(
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
     select
     <include refid="Base_Column_List"/>
     from yj_venue
@@ -238,7 +237,7 @@
       and venuename like concat('%',#{venuename},'%')
     </if>
     order by createdate
-    )A,(SELECT @rownum := 0) AS r
-    )A WHERE RN&gt;=#{begin} and RN&lt;=#{end}
+    )A
+    limit #{begin},#{end}
   </select>
 </mapper>

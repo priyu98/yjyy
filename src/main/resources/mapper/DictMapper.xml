@@ -162,8 +162,8 @@
       and type = #{type}
     </if>
     order by createdate desc
-    limit #{begin},#{end}
     )A
+    limit #{begin},#{end}
   </select>
 
   <select id="getDictByKey" parameterType="String" resultType="com.example.yjyy.result.business.DictResult">
