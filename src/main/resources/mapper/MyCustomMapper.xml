@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yjyy.dao.MyCustomMapper">
+    <resultMap id="BaseResultMap" type="com.example.yjyy.entity.Order">
+        <constructor>
+            <idArg column="ORDERID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="USERID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="SCHEDULEID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="ORDERTIME" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="UPDATEREAD" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="CHECKINTIME" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="ORDERSTATUS" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="PAYID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ORDERID, USERID, SCHEDULEID, ORDERTIME, UPDATEREAD, CHECKINTIME, ORDERSTATUS, PAYID
+  </sql>
+
+    <select id="findOrerstatusByscheduleid" parameterType="java.lang.String" resultType="com.example.yjyy.entity.Order">
+    select orderid,orderstatus from yj_order where scheduleid=#{scheduleid}
+  </select>
+
+    <update id="updateOrderStatusList" parameterType="java.util.List">
+        update yj_order set
+        orderstatus= case orderid
+        <foreach collection="list" item="order">
+            when #{order.orderid} then #{order.orderstatus}
+        </foreach>
+        end
+        where
+        <foreach collection="list" item="order" separator="or">
+            orderid = #{order.orderid}
+        </foreach>
+    </update>
+
+</mapper>

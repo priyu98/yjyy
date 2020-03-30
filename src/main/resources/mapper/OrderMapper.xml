@@ -17,7 +17,7 @@
     ORDERID, USERID, SCHEDULEID, ORDERTIME, UPDATEREAD, CHECKINTIME, ORDERSTATUS, PAYID
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from yj_order
     where ORDERID = #{orderid,jdbcType=VARCHAR}
@@ -160,14 +160,14 @@
   <update id="changeOrderStatus" parameterType="String">
     update yj_order set orderstatus = #{status} where orderid = #{orderid}
   </update>
-  
+
   <update id="checkin" parameterType="com.example.yjyy.entity.dto.CheckinDto">
     update yj_order set checkintime = #{date},orderstatus = '1001' where
     <foreach collection="orderlist" item="orderid" separator="or">
       orderid = #{orderid}
     </foreach>
   </update>
-  
+
   <select id="getStudentList" parameterType="String" resultType="com.example.yjyy.result.business.OrderUserResult">
     select o.orderid,o.userid,u.username,u.userphone,u.userphoto,u.sex,o.orderstatus,o.ordertime,c.cardname,ur.quota
     from yj_order o

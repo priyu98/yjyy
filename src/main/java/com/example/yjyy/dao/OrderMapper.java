@@ -7,11 +7,17 @@ import com.example.yjyy.entity.dto.UserDto;
 import com.example.yjyy.result.business.OrderUserResult;
 import com.example.yjyy.result.business.PageResult.OrderPageResult;
 import com.example.yjyy.result.business.PageResult.OrderRecordPageResult;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+@Mapper
+@Component
 public interface OrderMapper {
     int deleteByPrimaryKey(String orderid);
 
@@ -42,4 +48,5 @@ public interface OrderMapper {
     List<OrderRecordPageResult> getOrderRecordList(UserDto userDto);
     String findOrderByUserSchedule(@Param("userid") String userid,
                                    @Param("scheduleid") String scheduleid);
+
 }
