@@ -197,4 +197,8 @@
     select orderid from yj_order
     where userid = #{userid} and scheduleid = #{scheduleid} and orderstatus = '1000'
   </select>
+
+  <select id="countOrderByUserid" parameterType="String" resultType="int">
+    select count(*) from yj_order where userid = #{userid} and orderstatus = #{orderstatus}
+  </select>
 </mapper>

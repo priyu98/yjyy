@@ -8,6 +8,7 @@ import com.example.yjyy.result.business.OrderUserResult;
 import com.example.yjyy.result.business.PageResult.OrderPageResult;
 import com.example.yjyy.result.business.PageResult.OrderRecordPageResult;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
 import java.util.List;
@@ -42,4 +43,6 @@ public interface OrderMapper {
     List<OrderRecordPageResult> getOrderRecordList(UserDto userDto);
     String findOrderByUserSchedule(@Param("userid") String userid,
                                    @Param("scheduleid") String scheduleid);
+    int countOrderByUserid(@Param("userid") String userid,
+                           @Param("orderstatus") String orderstatus);
 }
