@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
         WebRestResult result = new WebRestResult();
         Order order = new Order(UUIDUtil.randomUUID(),userid,scheduleid,new Date(),"1",null,"1000",payid);
         PayCard payCard = payCardMapper.selectByPrimaryKey(payid);
-        if(payCard.getQuota()<orderMapper.countOrderByUserid(userid,"1000")){
+        if(payCard.getQuota()==orderMapper.countOrderByUserid(userid,"1000")){
             result.setResult(WebRestResult.FAILURE);
             result.setMessage("预约课程数量已超过卡剩余额度，预约失败");
             return result;
