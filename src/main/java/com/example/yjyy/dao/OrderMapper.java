@@ -32,6 +32,18 @@ public interface OrderMapper {
                                        @Param("end") int end,
                                        @Param("pagesize") int pagesize);
 
+    List<OrderPageResult> getUnfinishedOrderList(@Param("userid") String userid,
+                                       @Param("scheduleid") String scheduleid,
+                                       @Param("begin") int begin,
+                                       @Param("end") int end,
+                                       @Param("pagesize") int pagesize);
+
+    List<OrderPageResult> getFinishedOrderList(@Param("userid") String userid,
+                                       @Param("scheduleid") String scheduleid,
+                                       @Param("begin") int begin,
+                                       @Param("end") int end,
+                                       @Param("pagesize") int pagesize);
+
     int changeOrderStatus(@Param("status") String status,
                           @Param("orderid") String orderid);
 

@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -51,9 +48,15 @@ public class OrderServiceImpl implements OrderService {
         WebRestResult result = new WebRestResult();
         Order order = new Order(UUIDUtil.randomUUID(),userid,scheduleid,new Date(),"1",null,"1000",payid);
         PayCard payCard = payCardMapper.selectByPrimaryKey(payid);
+        Schedule schedule = scheduleMapper.selectByPrimaryKey(scheduleid);
         if(payCard.getQuota()==orderMapper.countOrderByUserid(userid,"1000")){
             result.setResult(WebRestResult.FAILURE);
             result.setMessage("预约课程数量已超过卡剩余额度，预约失败");
+            return result;
+        }
+        if(schedule.getStarttime().compareTo(new Date(new Date().getTime()+60*60*1000))<0){
+            result.setResult(WebRestResult.FAILURE);
+            result.setMessage("距课程开始不足一小时，预约已结束");
             return result;
         }
         if(orderMapper.insert(order)==1){
@@ -66,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
         result.setMessage("预约成功");
         String access_token = userMapper.getAccessToken();
         String template_id = "7RDWriJThlCrK9KtiWnLsex1GDCUJnn7DGHoiSdazUI";
-        Schedule schedule = scheduleMapper.selectByPrimaryKey(scheduleid);
         String openid = userMapper.selectByPrimaryKey(userid).getOpenid();
         if(openid != null && !"".equals(openid)) {
             Map<String, Object> data = new HashMap<>();
@@ -130,8 +132,13 @@ public class OrderServiceImpl implements OrderService {
        PageResult<OrderPageResult> result = new PageResult<>();
        int begin = (page-1) * pagesize;
        int end = pagesize;
-
-       List<OrderPageResult> list = orderMapper.getOrderList(userid,scheduleid,orderstatus,begin,end,pagesize);
+       List<OrderPageResult> list = new ArrayList<>();
+       if(!Tools.isEmpty(orderstatus) && orderstatus.equals("0"))
+           list = orderMapper.getUnfinishedOrderList(userid,scheduleid,begin,end,pagesize);
+       else if(!Tools.isEmpty(orderstatus) && orderstatus.equals("1"))
+           list = orderMapper.getFinishedOrderList(userid,scheduleid,begin,end,pagesize);
+       else
+           list = orderMapper.getOrderList(userid,scheduleid,orderstatus,begin,end,pagesize);
        if(list.size()>0){
            result.setTotal(list.get(0).getCnt());
            result.setPageCount(list.get(0).getPage());

@@ -201,4 +201,56 @@
   <select id="countOrderByUserid" parameterType="String" resultType="int">
     select count(*) from yj_order where userid = #{userid} and orderstatus = #{orderstatus}
   </select>
+
+  <select id="getUnfinishedOrderList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.OrderPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select o.orderid, u1.username, s.coursename, v.venuename, d.label coursetype, u2.username courseteacher, s.duration,
+    cr.classroomname classroom, s.studentnumber,
+    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname
+    from yj_order o
+    left join sys_user u1 on u1.userid = o.userid and u1.flag = '0'
+    left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'
+    left join sys_user u2 on u2.userid = s.courseteacher and u2.flag = '0'
+    left join sys_dict d on d.key = s.coursetype and d.type = 'course_type' and d.flag = '0'
+    left join yj_venue v on v.venueid = s.venueid and v.flag = '0'
+    left join yj_classroom cr on cr.classroomid = s.classroom and cr.flag = '0'
+    left join yj_user_card ur on ur.payid = o.payid
+    left join yj_card c on c.cardid = ur.cardid and c.flag = '0'
+    where (orderstatus = '1000' or orderstatus = '1001')
+    <if test="userid != null and userid != ''">
+      and o.userid = #{userid}
+    </if>
+    <if test="scheduleid != null and scheduleid != ''">
+      and o.scheduleid = #{scheduleid}
+    </if>
+    order by ordertime desc
+    )A
+    limit #{begin},#{end}
+  </select>
+
+  <select id="getFinishedOrderList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.OrderPageResult">
+    select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
+    select o.orderid, u1.username, s.coursename, v.venuename, d.label coursetype, u2.username courseteacher, s.duration,
+    cr.classroomname classroom, s.studentnumber,
+    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname
+    from yj_order o
+    left join sys_user u1 on u1.userid = o.userid and u1.flag = '0'
+    left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'
+    left join sys_user u2 on u2.userid = s.courseteacher and u2.flag = '0'
+    left join sys_dict d on d.key = s.coursetype and d.type = 'course_type' and d.flag = '0'
+    left join yj_venue v on v.venueid = s.venueid and v.flag = '0'
+    left join yj_classroom cr on cr.classroomid = s.classroom and cr.flag = '0'
+    left join yj_user_card ur on ur.payid = o.payid
+    left join yj_card c on c.cardid = ur.cardid and c.flag = '0'
+    where (orderstatus = '1002' or orderstatus = '1003' or orderstatus = '2000' or orderstatus = '3000')
+    <if test="userid != null and userid != ''">
+      and o.userid = #{userid}
+    </if>
+    <if test="scheduleid != null and scheduleid != ''">
+      and o.scheduleid = #{scheduleid}
+    </if>
+    order by ordertime desc
+    )A
+    limit #{begin},#{end}
+  </select>
 </mapper>

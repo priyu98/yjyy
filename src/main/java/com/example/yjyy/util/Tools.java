@@ -520,7 +520,7 @@ public class Tools {
 		return str.toString().substring(0,str.lastIndexOf("&"));
 	}
 	public static void main(String[] args) {
-		BigDecimal bigDecimal = new BigDecimal(99.99);
-		System.out.println((int)(bigDecimal.floatValue()*100));
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		System.out.println(df.format(new Date(new Date().getTime()+60*60*1000)));
 	}
 }

@@ -5,7 +5,6 @@ import com.example.yjyy.dao.OrderMapper;
 import com.example.yjyy.entity.Order;
 import com.example.yjyy.result.WebRestResult;
 import com.example.yjyy.service.MyCustomService;
-import com.sun.xml.internal.bind.v2.model.core.EnumLeafInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
