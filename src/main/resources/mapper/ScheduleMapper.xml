@@ -292,7 +292,7 @@
 
   <select id="getScheduleList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.SchedulePageResult">
     select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
-    select s.scheduleid, s.coursename, d.label coursetype, u.username courseteacher, s.duration, c.classroomname classroom, s.studentnumber, s.coursecolor,
+    select s.scheduleid, s.coursename, d.label coursetype, s.courseteacher courseteacherid, u.username courseteacher, s.duration, c.classroomname classroom, s.studentnumber, s.coursecolor,
     s.coursedifficulty, s.subsidy, s.starttime, s.endtime, s.coursephoto, s.remark, v.venuename, #{starttime} startdate, #{endtime} enddate
     from yj_schedule s
     left join sys_user u on u.userid = s.courseteacher and u.flag = '0'
@@ -309,6 +309,9 @@
     <if test="endtime != null and endtime != ''">
       and s.endtime &lt; str_to_date(#{endtime},'%Y-%m-%d')+1
     </if>
+    <if test="courseteacher != null and courseteacher != ''">
+      and s.courseteacher = #{courseteacher}
+    </if>
     order by starttime
     )A
     limit #{begin},#{end}
@@ -318,4 +321,13 @@
     update yj_order set orderstatus = '2000'
     where scheduleid = #{scheduleid}
   </update>
+
+  <select id="countScheduleSameTimeAndRoom" parameterType="String" resultType="int">
+    select count(*)
+    from yj_schedule
+    where classroom = #{classroom}
+    and ((starttime &lt;= str_to_date(#{starttime},'%Y-%m-%d %H:%i') and endtime &gt;= str_to_date(#{starttime},'%Y-%m-%d %H:%i'))
+    or (starttime &lt;= str_to_date(#{endtime},'%Y-%m-%d %H:%i') and endtime &gt;= str_to_date(#{endtime},'%Y-%m-%d %H:%i'))
+    or (starttime &gt;= str_to_date(#{starttime},'%Y-%m-%d %H:%i') and endtime &lt;= str_to_date(#{endtime},'%Y-%m-%d %H:%i')))
+  </select>
 </mapper>

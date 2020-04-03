@@ -184,7 +184,7 @@
 
   <select id="getMemberList" parameterType="String" resultType="com.example.yjyy.result.business.PageResult.MemberPageResult">
     select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
-    select uc.payid,u1.username,u1.userphone phone,u1.sex,u2.username teacher,uc.givetime,c.cardname,uc.cardno,uc.quota,uc.cardstatus
+    select uc.payid,u1.username,u1.userphone phone,u1.sex,u2.username teacher,uc.givetime,c.cardname,uc.cardno,uc.quota,uc.cardstatus,uc.userid
     from yj_user_card uc
     left join sys_user u1 on u1.userid = uc.userid and u1.flag = '0'
     left join sys_user u2 on u2.userid = uc.giveuser and u2.flag = '0'

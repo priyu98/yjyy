@@ -372,4 +372,8 @@
   <update id="updateSessionKey" parameterType="String">
     update wx_session_key set session_key = #{session_key} where openid = #{openid}
   </update>
+
+  <delete id="deleteSessionKeyByOpenid" parameterType="String">
+    delete wx_session_key where openid = #{openid}
+  </delete>
 </mapper>

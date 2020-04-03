@@ -110,7 +110,11 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUserid(userid);
         user.setFlag("1");
+        String openid = userDao.selectByPrimaryKey(userid).getOpenid();
         if(userDao.updateByPrimaryKeySelective(user)==1){
+            if(!"".equals(openid) && openid != null){
+                userDao.deleteSessionKeyByOpenid(openid);
+            }
             result.setResult(WebRestResult.SUCCESS);
         }
         else{
@@ -159,10 +163,10 @@ public class UserServiceImpl implements UserService {
         UserResult result = new UserResult();
         String response = HttpUtils.code2Session(code);
         JSONObject jsonObject = new JSONObject(response);
-        if(jsonObject.has("openid")){
+        if(jsonObject.has("openid")){  //根据code解析出了openid
             String openid = jsonObject.getString("openid");
             String userid = userDao.getUserByOpenid(openid);
-            if(!"".equals(userid) && userid != null){
+            if(!"".equals(userid) && userid != null){    //用户已存在
                 User user = userDao.selectByPrimaryKey(userid);
                 String rolename = roleDao.getRoleNameByUser(user.getUserid());
                 String token = JwtUtils.generateToken(user.getUserid());
@@ -172,7 +176,7 @@ public class UserServiceImpl implements UserService {
                 result.setToken(token);
                 result.setResult(WebRestResult.SUCCESS);
             }
-            else{
+            else{         //新用户注册
                 userDao.insertSessionKey(jsonObject.getString("openid"),jsonObject.getString("session_key"),null);
                 User user = new User();
                 userid = UUIDUtil.randomUUID();

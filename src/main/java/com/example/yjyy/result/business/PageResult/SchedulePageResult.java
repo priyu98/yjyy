@@ -11,6 +11,16 @@ public class SchedulePageResult extends Page {
     private String venuename;
     private String coursetype;
     private String courseteacher;
+    private String courseteacherid;
+
+    public String getCourseteacherid() {
+        return courseteacherid;
+    }
+
+    public void setCourseteacherid(String courseteacherid) {
+        this.courseteacherid = courseteacherid;
+    }
+
     private int duration;
     private String classroom;
     private int studentnumber;
@@ -19,6 +29,25 @@ public class SchedulePageResult extends Page {
     private String coursephoto;
     private String startdate;
     private String orderflag;
+    private int booknum;
+
+    public int getBooknum() {
+        return booknum;
+    }
+
+    public void setBooknum(int booknum) {
+        this.booknum = booknum;
+    }
+
+    public int getCheckinnum() {
+        return checkinnum;
+    }
+
+    public void setCheckinnum(int checkinnum) {
+        this.checkinnum = checkinnum;
+    }
+
+    private int checkinnum;
 
     public String getOrderflag() {
         return orderflag;

@@ -1,9 +1,7 @@
 package com.example.yjyy.service.impl;
 
-import com.example.yjyy.dao.ClassRoomMapper;
-import com.example.yjyy.dao.OrderMapper;
-import com.example.yjyy.dao.ScheduleMapper;
-import com.example.yjyy.dao.UserMapper;
+import com.example.yjyy.dao.*;
+import com.example.yjyy.entity.Order;
 import com.example.yjyy.entity.Schedule;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
@@ -32,9 +30,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private ClassRoomMapper classRoomMapper;
 
+    @Autowired
+    private MyCustomMapper myCustomMapper;
+
     @Override
     public WebRestResult addSchedule(Schedule schedule) {
         WebRestResult result = new WebRestResult();
+        if(scheduleMapper.countScheduleSameTimeAndRoom(schedule.getClassroom(),Tools.date2Str(schedule.getStarttime(),"yyyy-MM-dd HH:mm"),Tools.date2Str(schedule.getEndtime(),"yyyy-MM-dd HH:mm"))!=0){
+            result.setResult(WebRestResult.FAILURE);
+            result.setMessage("该教室排课有时间冲突,排课失败");
+        }
         schedule.setScheduleid(UUIDUtil.randomUUID());
         schedule.setCreatedate(new Date());
         schedule.setFlag("0");
@@ -132,12 +137,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public PageResult<SchedulePageResult> getScheduleList(String coursename, String starttime, String endtime, int page, int pagesize,String userid) {
+    public PageResult<SchedulePageResult> getScheduleList(String coursename, String starttime, String endtime, int page, int pagesize,String userid,String courseteacher) {
         PageResult<SchedulePageResult> result = new PageResult<>();
         int begin = (page-1) * pagesize;
         int end = pagesize;
 
-        List<SchedulePageResult> list = scheduleMapper.getScheduleList(coursename,starttime,endtime,begin,end,pagesize);
+        List<SchedulePageResult> list = scheduleMapper.getScheduleList(coursename,starttime,endtime,begin,end,pagesize,courseteacher);
         if(list.size()>0){
             if(!"".equals(userid) && userid != null) {
                 for (SchedulePageResult schedulePageResult : list) {
@@ -158,14 +163,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public PageResult<List<SchedulePageResult>> getWeekScheduleList(String date) {
+    public PageResult<List<SchedulePageResult>> getWeekScheduleList(String date,String courseteacher) {
         PageResult<List<SchedulePageResult>> result = new PageResult<>();
         int begin = 0;
         int end = 100;
         String starttime = Tools.getSundayDate(Tools.str2Date1(date));
         String endtime = Tools.date2Str(new Date(Tools.str2Date1(starttime).getTime()+7*24*60*60*1000),"yyyy-MM-dd");
 
-        List<SchedulePageResult> list = scheduleMapper.getScheduleList("",starttime,endtime,begin,end,100);
+        List<SchedulePageResult> list = scheduleMapper.getScheduleList("",starttime,endtime,begin,end,100,courseteacher);
         List<List<SchedulePageResult>> weekList = new ArrayList<>();
         for(int i=1;i<8;i++){
             List<SchedulePageResult> tempList = new ArrayList<>();
@@ -176,6 +181,19 @@ public class ScheduleServiceImpl implements ScheduleService {
             weekList.add(tempList);
         }
         if(list.size()>0){
+            for(SchedulePageResult schedulePageResult: list){
+                List<Order> orderList = myCustomMapper.findOrerstatusByscheduleid(schedulePageResult.getScheduleid());
+                int booknum = 0;
+                int checkinnum = 0;
+                for(Order order:orderList){
+                    if(order.getOrderstatus().equals("1000"))
+                        booknum++;
+                    else if(order.getOrderstatus().equals("1001"))
+                        checkinnum++;
+                }
+                schedulePageResult.setBooknum(booknum);
+                schedulePageResult.setCheckinnum(checkinnum);
+            }
             result.setRows(weekList);
         }
         result.setResult(WebRestResult.SUCCESS);

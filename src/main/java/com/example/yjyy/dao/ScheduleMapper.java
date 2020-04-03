@@ -24,7 +24,11 @@ public interface ScheduleMapper {
                                              @Param("endtime") String endtime,
                                              @Param("begin") int begin,
                                              @Param("end") int end,
-                                             @Param("pagesize") int pagesize);
+                                             @Param("pagesize") int pagesize,
+                                             @Param("courseteacher") String courseteacher);
 
     int cancelOrderByAdmin(String scheduleid);
+    int countScheduleSameTimeAndRoom(@Param("classroom") String classroom,
+                                     @Param("starttime") String starttime,
+                                     @Param("endtime") String endtime);
 }
