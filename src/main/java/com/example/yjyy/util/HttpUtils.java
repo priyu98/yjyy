@@ -1,5 +1,6 @@
 package com.example.yjyy.util;
 
+import com.example.yjyy.config.MyX509TrustManager;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -19,11 +20,15 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import java.io.*;
 import java.math.BigDecimal;
+import java.net.ConnectException;
 import java.net.URI;
+import java.net.URL;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +44,7 @@ public class HttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class.getName());
     private static final String appid = "wxf275b0bcada2b33b";
     private static final String secret = "f9088de1385f71c020c8fc436a5ea072";
-    private static final String mch_id = "1";
+    private static final String mch_id = "1582805761";
     private static final String key = "1";
 
 
@@ -140,6 +145,65 @@ public class HttpUtils {
         return resultString;
     }
 
+    public static JSONObject httpsRequest(String requestUrl, String requestMethod, String outputStr) {
+
+        JSONObject jsonObject = null;
+        StringBuffer buffer = new StringBuffer();
+        try {
+            // 创建SSLContext对象，并使用我们指定的信任管理器初始化
+            TrustManager[] tm = { new MyX509TrustManager() };
+            SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+            sslContext.init(null, tm, new java.security.SecureRandom());
+            // 从上述SSLContext对象中得到SSLSocketFactory对象
+            SSLSocketFactory ssf = sslContext.getSocketFactory();
+
+            URL url = new URL(requestUrl);
+            HttpsURLConnection httpUrlConn = (HttpsURLConnection) url.openConnection();
+            httpUrlConn.setSSLSocketFactory(ssf);
+
+            httpUrlConn.setDoOutput(true);
+            httpUrlConn.setDoInput(true);
+            httpUrlConn.setUseCaches(false);
+            // 设置请求方式（GET/POST）
+            httpUrlConn.setRequestMethod(requestMethod);
+
+            if ("GET".equalsIgnoreCase(requestMethod)) {
+                httpUrlConn.connect();
+            }
+
+
+            // 当有数据需要提交时
+            if (null != outputStr) {
+                OutputStream outputStream = httpUrlConn.getOutputStream();
+                // 注意编码格式，防止中文乱码
+                outputStream.write(outputStr.getBytes("UTF-8"));
+                outputStream.close();
+            }
+
+            // 将返回的输入流转换成字符串
+            InputStream inputStream = httpUrlConn.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            String str = null;
+            while ((str = bufferedReader.readLine()) != null) {
+                buffer.append(str);
+            }
+            bufferedReader.close();
+            inputStreamReader.close();
+            // 释放资源
+            inputStream.close();
+            inputStream = null;
+            httpUrlConn.disconnect();
+            jsonObject = new JSONObject(buffer.toString());
+        } catch (ConnectException ce) {
+            ce.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
     public static String doPost(String url) {
         return doPost(url, null);
     }
@@ -215,7 +279,7 @@ public class HttpUtils {
         param.put("touser",touser);
         param.put("template_id",template_id);
         param.put("data",data);
-        return doPost("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,param);
+        return httpsRequest("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,"POST",new JSONObject(param).toString()).toString();
     }
 
     //微信统一下单api
@@ -245,6 +309,19 @@ public class HttpUtils {
     }
 
     public static void main(String args[]){
-        wxUnifiedOrder("1","2",new BigDecimal(9.99));
+        Map<String, Object> data = new HashMap<>();
+        Map<String, String> map1 = new HashMap<>();
+        Map<String, String> map2 = new HashMap<>();
+        Map<String, String> map3 = new HashMap<>();
+        Map<String, String> map4 = new HashMap<>();
+        map1.put("value", "1");
+        map2.put("value", "1");
+        map3.put("value", "2020-4-7 11:02");
+        map4.put("value", "1");
+        data.put("name1", map1);
+        data.put("name2", map2);
+        data.put("date3", map3);
+        data.put("thing4", map4);
+        System.out.println(HttpUtils.wxSendMsg("32_T0r8hfCSl6Z9diJNNc63EsliTowBQgUy0mZNA05L21kc2H3cePoGjPKFn3l7Xeq-GgvsHVqoOnQHrmqSEMq2NjZdbbw7rD3UU1R8YIvnX33ZscmU4W4GHhVv2WQu2cEy5PyJd4R2ijFPAIZ8BFFdABASWW","o9MUC5SRzbeUR9iiEAaozrFrS5u8","7RDWriJThlCrK9KtiWnLsex1GDCUJnn7DGHoiSdazUI",data));
     }
 }

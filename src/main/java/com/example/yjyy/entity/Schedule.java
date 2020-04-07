@@ -68,7 +68,17 @@ public class Schedule {
 
     private String remark;
 
-    public Schedule(String scheduleid, String coursename, String venueid, String coursetype, String courseteacher, Integer duration, String classroom, Integer studentnumber, String coursecolor, String coursedifficulty, BigDecimal subsidy, Integer studentlimit, String extraoption, Date starttime, String createuser, Date createdate, String modifyuser, Date modifydate, String flag, Date endtime) {
+    private String courseid;
+
+    public String getCourseid() {
+        return courseid;
+    }
+
+    public void setCourseid(String courseid) {
+        this.courseid = courseid;
+    }
+
+    public Schedule(String scheduleid, String coursename, String venueid, String coursetype, String courseteacher, Integer duration, String classroom, Integer studentnumber, String coursecolor, String coursedifficulty, BigDecimal subsidy, Integer studentlimit, String extraoption, Date starttime, String createuser, Date createdate, String modifyuser, Date modifydate, String flag, Date endtime, String coursephoto, String remark) {
         this.scheduleid = scheduleid;
         this.coursename = coursename;
         this.venueid = venueid;
@@ -89,6 +99,8 @@ public class Schedule {
         this.modifydate = modifydate;
         this.flag = flag;
         this.endtime = endtime;
+        this.coursephoto = coursephoto;
+        this.remark = remark;
     }
 
     public Schedule() {

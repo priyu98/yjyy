@@ -49,14 +49,14 @@
       COURSEDIFFICULTY, SUBSIDY, STUDENTLIMIT, 
       EXTRAOPTION, STARTTIME, CREATEUSER, 
       CREATEDATE, MODIFYUSER, MODIFYDATE, 
-      FLAG, ENDTIME, COURSEPHOTO, REMARK)
+      FLAG, ENDTIME, COURSEPHOTO, REMARK, COURSEID)
     values (#{scheduleid,jdbcType=VARCHAR}, #{coursename,jdbcType=VARCHAR}, #{venueid,jdbcType=VARCHAR}, 
       #{coursetype,jdbcType=CHAR}, #{courseteacher,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, 
       #{classroom,jdbcType=VARCHAR}, #{studentnumber,jdbcType=INTEGER}, #{coursecolor,jdbcType=VARCHAR}, 
       #{coursedifficulty,jdbcType=CHAR}, #{subsidy,jdbcType=DECIMAL}, #{studentlimit,jdbcType=INTEGER}, 
       #{extraoption,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
       #{createdate,jdbcType=TIMESTAMP}, #{modifyuser,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
-      #{flag,jdbcType=CHAR}, #{endtime,jdbcType=TIMESTAMP}, #{coursephoto,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+      #{flag,jdbcType=CHAR}, #{endtime,jdbcType=TIMESTAMP}, #{coursephoto,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{courseid,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.yjyy.entity.Schedule">
     insert into yj_schedule

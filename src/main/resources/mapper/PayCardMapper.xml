@@ -216,7 +216,7 @@
     join yj_card_venue cv on cc.cardid = cv.cardid
     join yj_schedule s on s.scheduleid = #{scheduleid} and s.flag = '0'
     left join yj_course c on c.courseid = cc.courseid and c.flag = '0'
-    where s.coursename = c.coursename and s.venueid = cv.venueid)
+    where s.courseid = c.courseid and s.venueid = cv.venueid)
     and uc.cardstatus != '9' and uc.quota != 0 and uc.payflag = 1
   </select>
 

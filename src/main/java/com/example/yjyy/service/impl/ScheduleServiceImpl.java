@@ -39,6 +39,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         if(scheduleMapper.countScheduleSameTimeAndRoom(schedule.getClassroom(),Tools.date2Str(schedule.getStarttime(),"yyyy-MM-dd HH:mm"),Tools.date2Str(schedule.getEndtime(),"yyyy-MM-dd HH:mm"))!=0){
             result.setResult(WebRestResult.FAILURE);
             result.setMessage("该教室排课有时间冲突,排课失败");
+            return result;
         }
         schedule.setScheduleid(UUIDUtil.randomUUID());
         schedule.setCreatedate(new Date());
