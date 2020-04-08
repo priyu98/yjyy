@@ -20,6 +20,10 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.security.*;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 public class Tools {
 
@@ -519,8 +523,96 @@ public class Tools {
 		}
 		return str.toString().substring(0,str.lastIndexOf("&"));
 	}
+
+	/**
+	 * 解析xml,返回第一级元素键值对。如果第一级元素有子节点，则此节点的值是子节点的xml数据。
+	 *
+	 * @param strxml
+	 * @return
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
+	public static Map doXMLParse(String strxml) {
+		try {
+			if (null == strxml || "".equals(strxml)) {
+				return null;
+			}
+
+			Map m = new HashMap();
+			InputStream in = String2Inputstream(strxml);
+			SAXBuilder builder = new SAXBuilder();
+			Document doc;
+
+			doc = builder.build(in);
+
+			Element root = doc.getRootElement();
+			List list = root.getChildren();
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				Element e = (Element) it.next();
+				String k = e.getName();
+				String v = "";
+				List children = e.getChildren();
+				if (children.isEmpty()) {
+
+					v = e.getTextNormalize();
+				} else {
+
+					v = getChildrenText(children);
+
+				}
+				m.put(k, v);
+			}
+
+			// 关闭流
+			in.close();
+
+			return m;
+		} catch (JDOMException | IOException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+	}
+
+	public static InputStream String2Inputstream(String str) {
+		return new ByteArrayInputStream(str.getBytes());
+	}
+
+	/**
+	 * 获取子结点的xml
+	 *
+	 * @param children
+	 * @return String
+	 */
+	public static String getChildrenText(List children) {
+		StringBuffer sb = new StringBuffer();
+		if (!children.isEmpty()) {
+			Iterator it = children.iterator();
+			while (it.hasNext()) {
+				Element e = (Element) it.next();
+				String name = e.getName();
+				String value = e.getTextNormalize();
+				List list = e.getChildren();
+				sb.append("<" + name + ">");
+				if (!list.isEmpty()) {
+					sb.append(getChildrenText(list));
+				}
+				sb.append(value);
+				sb.append("</" + name + ">");
+			}
+		}
+
+		return sb.toString();
+	}
+
 	public static void main(String[] args) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		System.out.println(df.format(new Date(new Date().getTime()+60*60*1000)));
+		Map<String,Object> map = new HashMap<>();
+		map.put("appid","wxd930ea5d5a258f4f");
+		map.put("mch_id","10000100");
+		map.put("device_info","1000");
+		map.put("body","test");
+		map.put("nonce_str","ibuaiVcKdpRxkhJA");
+		String str = map2string(map)+"&key=192006250b4c09247ec02edce69f6a2d";
+		System.out.println(MD5Util.getMD5Info(str));
 	}
 }

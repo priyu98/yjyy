@@ -39,10 +39,11 @@ public class wxController {
     @CrossOrigin
     public void wxReturnOrder(HttpServletRequest request){
         String xmlStr = Tools.getWxXml(request);
-        JSONObject jsonObject = new JSONObject(xmlStr);
-        if(jsonObject.getString("return_code").equals("SUCCESS")){
-            String openid = jsonObject.getString("openid");
-            PayCard payCard = payCardMapper.selectByPrimaryKey(jsonObject.getString("out_trade_no"));
+        Map map = Tools.doXMLParse(xmlStr);
+        String return_code = (String) map.get("return_code");
+        if(return_code.equals("SUCCESS")){
+            String openid = (String)map.get("openid");
+            PayCard payCard = payCardMapper.selectByPrimaryKey((String)map.get("out_trade_no"));
             payCard.setPayflag(1);
             payCardMapper.updateByPrimaryKeySelective(payCard);
             if(openid != null && !"".equals(openid)) {

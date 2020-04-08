@@ -129,28 +129,29 @@ public class CardServiceImpl implements CardService {
             payCard.setTerm(cardMapper.selectByPrimaryKey(payCard.getCardid()).getTerm());
             payCard.setGivetime(new Date());
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
-            /*微信支付逻辑暂时不用
-            JSONObject jsonObject = new JSONObject(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),cardMapper.selectByPrimaryKey(payCard.getCardid()).getPrice()));
-            if(jsonObject.getString("return_code").equals("SUCCESS")){
-                if(jsonObject.getString("result_code").equals("SUCCESS")){
-                    result.setMessage(jsonObject.getString("prepay_id"));
+            /*微信支付逻辑
+            Map map = Tools.doXMLParse(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),cardMapper.selectByPrimaryKey(payCard.getCardid()).getPrice()));
+            String return_code = (String)map.get("return_code");
+            if(return_code.equals("SUCCESS")){
+                String result_code = (String)map.get("result_code");
+                if(result_code.equals("SUCCESS")){
+                    result.setMessage((String)map.get("prepay_id"));
                 }
                 else{
                     result.setResult(WebRestResult.FAILURE);
-                    result.setMessage(jsonObject.getString("err_code_des"));
+                    result.setMessage((String)map.get("err_code_des"));
                     return result;
                 }
             }
             else{
                 result.setResult(WebRestResult.FAILURE);
-                result.setMessage(jsonObject.getString("return_msg"));
+                result.setMessage((String)map.get("return_msg"));
                 return result;
             }
-
-             */
+            */
         }
         if(payCardMapper.insert(payCard)==1){
-            //直接发卡微信提醒
+            //直接发卡微信提醒,改到支付回调函数执行
             /*
             if(payCard.getCardid()!=null){
                 String openid = userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid();

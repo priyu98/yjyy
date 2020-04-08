@@ -26,9 +26,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.math.BigDecimal;
-import java.net.ConnectException;
-import java.net.URI;
-import java.net.URL;
+import java.net.*;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +43,7 @@ public class HttpUtils {
     private static final String appid = "wxf275b0bcada2b33b";
     private static final String secret = "f9088de1385f71c020c8fc436a5ea072";
     private static final String mch_id = "1582805761";
-    private static final String key = "1";
+    private static final String key = "Aa136173179071361849300015084894";
 
 
     private static PoolingHttpClientConnectionManager connManager = null;
@@ -208,60 +206,6 @@ public class HttpUtils {
         return doPost(url, null);
     }
 
-    // public static String doPostJson(String url, String json,String tokenHeader) {
-    //
-    //     CloseableHttpResponse response = null;
-    //     try {
-    //         // 创建Http Post请求
-    //         url = Normalizer.normalize(url, Normalizer.Form.NFKC);
-    //         HttpPost httpPost = new HttpPost(url);
-    //         // 创建请求内容
-    //         httpPost.setHeader("HTTP Method","POST");
-    //         httpPost.setHeader("Connection","Keep-Alive");
-    //         httpPost.setHeader("Content-Type","application/json;charset=utf-8");
-    //
-    //         if (!url.contains("userauth")) {
-    //             httpPost.setHeader("cmsgateway-token", tokenHeader);
-    //         }
-    //
-    //         StringEntity stringEntity = new StringEntity(json);
-    //         httpPost.setEntity(stringEntity);
-    //
-    //         // 执行http请求
-    //         response = client.execute(httpPost);
-    //         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-    //
-    //             HttpEntity entity = response.getEntity();
-    //             if (null != entity) {
-    //                 resultString = EntityUtils.toString(entity, "UTF-8");
-    //
-    //                 // if (url.contains("userauth")) {
-    //                 //     dealToken(resultString);
-    //                 // }
-    //             } else {
-    //                 resultString = StringUtils.ENTITY_BLANK;
-    //             }
-    //
-    //             try {
-    //                 EntityUtils.consume(entity);
-    //             } catch (IOException e) {
-    //                 LOGGER.error("release entity failed {}", e.getMessage());
-    //             }
-    //         }
-    //     } catch (Exception e) {
-    //         return StringUtils.CONNECT_ERROR;
-    //     } finally {
-    //         if (null != response) {
-    //             try {
-    //                 EntityUtils.consume(response.getEntity());
-    //                 response.close();
-    //             } catch (IOException e) {
-    //                 LOGGER.error("release response failed {}", e.getMessage());
-    //             }
-    //         }
-    //     }
-    //     return resultString;
-    // }
 
     //微信小程序code获取openid
     public static String code2Session(String code){
@@ -282,46 +226,78 @@ public class HttpUtils {
         return httpsRequest("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,"POST",new JSONObject(param).toString()).toString();
     }
 
+    public static String testPost(String urlStr,String xmlInfo) {
+        try {
+            URL url = new URL(urlStr);
+            URLConnection con = url.openConnection();
+            con.setDoOutput(true);
+            //con.setRequestProperty("Pragma:", "no-cache");
+            con.setRequestProperty("Cache-Control", "no-cache");
+            con.setRequestProperty("Content-Type", "text/xml");
+
+            OutputStreamWriter out = new OutputStreamWriter(con
+                    .getOutputStream());
+            System.out.println("urlStr=" + urlStr);
+            System.out.println("xmlInfo=" + xmlInfo);
+            out.write(new String(xmlInfo.getBytes("UTF-8")));
+            out.flush();
+            out.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader(con
+                    .getInputStream()));
+            String line = "";
+            String result = "";
+            for (line = br.readLine(); line != null; line = br.readLine()) {
+                result += line;
+            }
+            return result;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     //微信统一下单api
     public static String wxUnifiedOrder(String payid, String openid, BigDecimal price){
         String nonce_str = String.valueOf(Tools.getRandomNum());
         String body = "育瑜伽-会员卡购买";
         String out_trade_no = payid;
-        int total_fee = (int)(price.floatValue()*100);
+        String total_fee = String.valueOf((int)(price.floatValue()*100));
         String spbill_create_ip = "39.106.171.39";
         String notify_url = "https://yuyoga.club/yjyy/wxController/wxReturnOrder";
         String trade_type = "JSAPI";
         Map<String,Object> param = new HashMap<>();
+        StringBuilder sb = new StringBuilder();
         param.put("appid",appid);
+        sb.append("<xml>");
+        sb.append("<appid>"+appid+"</appid>");
         param.put("mch_id",mch_id);
+        sb.append("<mch_id>"+mch_id+"</mch_id>");
         param.put("nonce_str",nonce_str);
+        sb.append("<nonce_str>"+nonce_str+"</nonce_str>");
         param.put("body",body);
+        sb.append("<body>"+body+"</body>");
         param.put("out_trade_no",out_trade_no);
+        sb.append("<out_trade_no>"+out_trade_no+"</out_trade_no>");
         param.put("total_fee",total_fee);
+        sb.append("<total_fee>"+total_fee+"</total_fee>");
         param.put("spbill_create_ip",spbill_create_ip);
+        sb.append("<spbill_create_ip>"+spbill_create_ip+"</spbill_create_ip>");
         param.put("notify_url",notify_url);
+        sb.append("<notify_url>"+notify_url+"</notify_url>");
         param.put("trade_type",trade_type);
+        sb.append("<trade_type>"+trade_type+"</trade_type>");
         param.put("openid",openid);
+        sb.append("<openid>"+openid+"</openid>");
         String str = Tools.map2string(param)+"&key="+key;
         String sign = MD5Util.getMD5Info(str);
-        param.put("sign",sign);
-        return doPost("https://api.mch.weixin.qq.com/pay/unifiedorder",param);
+        sb.append("<sign>"+sign+"</sign>");
+        sb.append("</xml>");
+        return testPost("https://api.mch.weixin.qq.com/pay/unifiedorder",sb.toString());
     }
 
     public static void main(String args[]){
-        Map<String, Object> data = new HashMap<>();
-        Map<String, String> map1 = new HashMap<>();
-        Map<String, String> map2 = new HashMap<>();
-        Map<String, String> map3 = new HashMap<>();
-        Map<String, String> map4 = new HashMap<>();
-        map1.put("value", "1");
-        map2.put("value", "1");
-        map3.put("value", "2020-4-7 11:02");
-        map4.put("value", "1");
-        data.put("name1", map1);
-        data.put("name2", map2);
-        data.put("date3", map3);
-        data.put("thing4", map4);
-        System.out.println(HttpUtils.wxSendMsg("32_T0r8hfCSl6Z9diJNNc63EsliTowBQgUy0mZNA05L21kc2H3cePoGjPKFn3l7Xeq-GgvsHVqoOnQHrmqSEMq2NjZdbbw7rD3UU1R8YIvnX33ZscmU4W4GHhVv2WQu2cEy5PyJd4R2ijFPAIZ8BFFdABASWW","o9MUC5SRzbeUR9iiEAaozrFrS5u8","7RDWriJThlCrK9KtiWnLsex1GDCUJnn7DGHoiSdazUI",data));
+        System.out.println(wxUnifiedOrder("1","o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ",new BigDecimal(0.1)));
     }
 }
