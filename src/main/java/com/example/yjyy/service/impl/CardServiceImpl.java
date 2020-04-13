@@ -129,7 +129,6 @@ public class CardServiceImpl implements CardService {
             payCard.setTerm(cardMapper.selectByPrimaryKey(payCard.getCardid()).getTerm());
             payCard.setGivetime(new Date());
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
-            /*微信支付逻辑
             Map map = Tools.doXMLParse(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),cardMapper.selectByPrimaryKey(payCard.getCardid()).getPrice()));
             String return_code = (String)map.get("return_code");
             if(return_code.equals("SUCCESS")){
@@ -148,7 +147,6 @@ public class CardServiceImpl implements CardService {
                 result.setMessage((String)map.get("return_msg"));
                 return result;
             }
-            */
         }
         if(payCardMapper.insert(payCard)==1){
             //直接发卡微信提醒,改到支付回调函数执行

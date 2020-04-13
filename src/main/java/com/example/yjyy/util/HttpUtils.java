@@ -43,7 +43,7 @@ public class HttpUtils {
     private static final String appid = "wxf275b0bcada2b33b";
     private static final String secret = "f9088de1385f71c020c8fc436a5ea072";
     private static final String mch_id = "1582805761";
-    private static final String key = "Aa136173179071361849300015084894";
+    private static final String key = "Aa150848948221508489482215084894";
 
 
     private static PoolingHttpClientConnectionManager connManager = null;
@@ -298,6 +298,14 @@ public class HttpUtils {
     }
 
     public static void main(String args[]){
-        System.out.println(wxUnifiedOrder("1","o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ",new BigDecimal(0.1)));
+        Map map = Tools.doXMLParse(wxUnifiedOrder("f47bbf1cf6fc45d990b17db560a0f692","o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ",new BigDecimal(0.1)));
+        String return_code = (String)map.get("return_code");
+        if(return_code.equals("SUCCESS")){
+            String result_code = (String)map.get("result_code");
+            if(result_code.equals("SUCCESS")){
+                System.out.println((String)map.get("prepay_id"));
+            }
+        }
+
     }
 }
