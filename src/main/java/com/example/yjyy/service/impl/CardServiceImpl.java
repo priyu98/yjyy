@@ -11,6 +11,7 @@ import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
 import com.example.yjyy.result.business.PageResult.CardPageResult;
 import com.example.yjyy.result.business.PageResult.MemberPageResult;
+import com.example.yjyy.result.business.wxPayResult;
 import com.example.yjyy.service.CardService;
 import com.example.yjyy.util.HttpUtils;
 import com.example.yjyy.util.Tools;
@@ -118,8 +119,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public WebRestResult payCard(PayCard payCard) {
-        WebRestResult result = new WebRestResult();
+    public wxPayResult payCard(PayCard payCard) {
+        wxPayResult result = new wxPayResult();
         payCard.setPayid(UUIDUtil.randomUUID());
         payCard.setPayflag(1);
         //线上支付直接发卡，补充卡号、有效期、发卡时间、额度
@@ -129,12 +130,18 @@ public class CardServiceImpl implements CardService {
             payCard.setTerm(cardMapper.selectByPrimaryKey(payCard.getCardid()).getTerm());
             payCard.setGivetime(new Date());
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
-            Map map = Tools.doXMLParse(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),cardMapper.selectByPrimaryKey(payCard.getCardid()).getPrice()));
+            Map map = Tools.doXMLParse(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),payCard.getPayment()));
             String return_code = (String)map.get("return_code");
             if(return_code.equals("SUCCESS")){
                 String result_code = (String)map.get("result_code");
                 if(result_code.equals("SUCCESS")){
-                    result.setMessage((String)map.get("prepay_id"));
+                    String prepay_id = (String)map.get("prepay_id");
+                    String nonce_str = String.valueOf(Tools.getRandomNum());
+                    String timestamp = String.valueOf(new Date().getTime()/1000);
+                    result.setPrepay_id(prepay_id);
+                    result.setNonceStr(nonce_str);
+                    result.setPaySign(Tools.getPaySign(nonce_str,timestamp,prepay_id));
+                    result.setTimeStamp(timestamp);
                 }
                 else{
                     result.setResult(WebRestResult.FAILURE);

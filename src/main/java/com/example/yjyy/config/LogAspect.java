@@ -44,10 +44,10 @@ public class LogAspect {
 
         StringBuilder requestLog = new StringBuilder();
         Signature signature = joinPoint.getSignature();
-        requestLog.append("请求信息：").append("URL = {").append(request.getRequestURI()).append("},\t")
-                .append("请求方式 = {").append(request.getMethod()).append("},\t")
-                .append("请求IP = {").append(request.getRemoteAddr()).append("},\t")
-                .append("类方法 = {").append(signature.getDeclaringTypeName()).append(".")
+        requestLog.append("requestURL: ").append("URL = {").append(request.getRequestURI()).append("},\t")
+                .append("requestMethod = {").append(request.getMethod()).append("},\t")
+                .append("requestIP = {").append(request.getRemoteAddr()).append("},\t")
+                .append("classMethod = {").append(signature.getDeclaringTypeName()).append(".")
                 .append(signature.getName()).append("},\t");
 
         // 处理请求参数
@@ -55,9 +55,9 @@ public class LogAspect {
         Object[] paramValues = joinPoint.getArgs();
         int paramLength = null == paramNames ? 0 : paramNames.length;
         if (paramLength == 0) {
-            requestLog.append("请求参数 = {} ");
+            requestLog.append("requestParam = {} ");
         } else {
-            requestLog.append("请求参数 = [");
+            requestLog.append("requestParam = [");
             for (int i = 0; i < paramLength - 1; i++) {
                 requestLog.append(paramNames[i]).append("=").append(JSONObject.valueToString(paramValues[i])).append(",");
             }
@@ -76,7 +76,7 @@ public class LogAspect {
      */
     @AfterReturning(returning = "webRestResult", pointcut = "controllerMethod()")
     public void logResultVOInfo(WebRestResult webRestResult) throws Exception {
-        log.info("请求结果：" + webRestResult.getResult() + "\t" + webRestResult.getMessage());
+        log.info("requestResult: " + webRestResult.getResult() + "\t" + webRestResult.getMessage());
     }
 
 

@@ -20,7 +20,9 @@
         <encoder>
             <!-- 按照上面配置的LOG_PATTERN来打印日志 -->
             <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
+
     </appender>
 
     <!--每天生成一个日志文件，保存30天的日志文件。rollingFile用来切分文件的 -->
@@ -44,6 +46,7 @@
 
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
@@ -67,6 +70,7 @@
 
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 

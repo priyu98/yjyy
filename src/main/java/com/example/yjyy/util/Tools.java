@@ -524,6 +524,16 @@ public class Tools {
 		return str.toString().substring(0,str.lastIndexOf("&"));
 	}
 
+	public static String getPaySign(String nonceStr,String timeStamp,String prepay_id){
+		Map<String,Object> map = new HashMap<>();
+		map.put("appId","wxf275b0bcada2b33b");
+		map.put("timeStamp",timeStamp);
+		map.put("nonceStr",nonceStr);
+		map.put("package","prepay_id="+prepay_id);
+		map.put("signType","MD5");
+		String str = map2string(map)+"&key=Aa150848948221508489482215084894";
+		return MD5Util.getMD5Info(str);
+	}
 	/**
 	 * 解析xml,返回第一级元素键值对。如果第一级元素有子节点，则此节点的值是子节点的xml数据。
 	 *

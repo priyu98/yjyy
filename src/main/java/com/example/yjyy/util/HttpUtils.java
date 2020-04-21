@@ -298,11 +298,12 @@ public class HttpUtils {
     }
 
     public static void main(String args[]){
-        Map map = Tools.doXMLParse(wxUnifiedOrder("f47bbf1cf6fc45d990b17db560a0f692","o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ",new BigDecimal(0.1)));
+        Map map = Tools.doXMLParse(wxUnifiedOrder("f7561d3b19b548fa846308cbd57d3ee8","o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ",new BigDecimal(0.1)));
         String return_code = (String)map.get("return_code");
         if(return_code.equals("SUCCESS")){
             String result_code = (String)map.get("result_code");
             if(result_code.equals("SUCCESS")){
+                System.out.println("成功");
                 System.out.println((String)map.get("prepay_id"));
             }
         }
