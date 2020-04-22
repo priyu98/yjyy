@@ -78,7 +78,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             map5.put("value","管理员取消课程");
             data.put("name1",map1);
             data.put("name2",map2);
-            data.put("date3",map3);
+            data.put("time3",map3);
             data.put("thing4",map4);
             data.put("thing5",map5);
             for(OrderUserResult user : list) {

@@ -80,9 +80,9 @@ public class OrderServiceImpl implements OrderService {
             map2.put("value", userMapper.selectByPrimaryKey(schedule.getCourseteacher()).getUsername());
             map3.put("value", Tools.date2Str(schedule.getStarttime(), "yyyy-MM-dd hh:mm"));
             map4.put("value", classRoomMapper.selectByPrimaryKey(schedule.getClassroom()).getClassroomname());
-            data.put("name1", map1);
+            data.put("thing6", map1);
             data.put("name2", map2);
-            data.put("date3", map3);
+            data.put("time3", map3);
             data.put("thing4", map4);
             HttpUtils.wxSendMsg(access_token,openid,template_id,data);
         }
@@ -114,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
                 map5.put("value", "用户取消");
                 data.put("name1", map1);
                 data.put("name2", map2);
-                data.put("date3", map3);
+                data.put("time3", map3);
                 data.put("thing4", map4);
                 data.put("thing5", map5);
                 HttpUtils.wxSendMsg(access_token, openid, template_id, data);

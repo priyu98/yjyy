@@ -1,11 +1,15 @@
 package com.example.yjyy.result.business;
 
+import com.example.yjyy.entity.Course;
+import com.example.yjyy.entity.Venue;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class CardOrderResult {
     private String payid;
+    private String cardid;
     private String cardname;
     private String cardno;
     private int quota;
@@ -14,6 +18,41 @@ public class CardOrderResult {
     private String giveuser;
     private String cardstatus;
     private int term;
+    private String cardtype;
+    private List<Venue> venueList;
+    private List<Course> courseList;
+
+    public String getCardid() {
+        return cardid;
+    }
+
+    public void setCardid(String cardid) {
+        this.cardid = cardid;
+    }
+
+    public String getCardtype() {
+        return cardtype;
+    }
+
+    public void setCardtype(String cardtype) {
+        this.cardtype = cardtype;
+    }
+
+    public List<Venue> getVenueList() {
+        return venueList;
+    }
+
+    public void setVenueList(List<Venue> venueList) {
+        this.venueList = venueList;
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
+    }
 
     public String getPayid() {
         return payid;

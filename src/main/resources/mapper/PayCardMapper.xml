@@ -251,7 +251,7 @@
   </update>
 
   <select id="getCardsByUser" parameterType="String" resultType="com.example.yjyy.result.business.CardOrderResult">
-    select uc.payid,c.cardname,uc.cardno,uc.quota,uc.term,uc.cardstatus,uc.givetime,u.username giveuser
+    select uc.payid,c.cardname,uc.cardno,uc.quota,uc.term,uc.cardstatus,uc.givetime,u.username giveuser, c.cardtype,c.cardid
     from yj_user_card uc
     left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
     left join sys_user u on u.userid = uc.giveuser and u.flag = '0'

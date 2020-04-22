@@ -28,10 +28,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.net.*;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Xinke
@@ -298,14 +295,23 @@ public class HttpUtils {
     }
 
     public static void main(String args[]){
-        Map map = Tools.doXMLParse(wxUnifiedOrder("f7561d3b19b548fa846308cbd57d3ee8","o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ",new BigDecimal(0.1)));
-        String return_code = (String)map.get("return_code");
-        if(return_code.equals("SUCCESS")){
-            String result_code = (String)map.get("result_code");
-            if(result_code.equals("SUCCESS")){
-                System.out.println("成功");
-                System.out.println((String)map.get("prepay_id"));
-            }
+        String template_id = "7RDWriJThlCrK9KtiWnLsex1GDCUJnn7DGHoiSdazUI";
+        String openid = "o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ";
+        if(openid != null && !"".equals(openid)) {
+            Map<String, Object> data = new HashMap<>();
+            Map<String, String> map1 = new HashMap<>();
+            Map<String, String> map2 = new HashMap<>();
+            Map<String, String> map3 = new HashMap<>();
+            Map<String, String> map4 = new HashMap<>();
+            map1.put("value", "test");
+            map2.put("value", "test");
+            map3.put("value", Tools.date2Str(new Date(), "yyyy-MM-dd hh:mm"));
+            map4.put("value", "test");
+            data.put("thing6", map1);
+            data.put("name2", map2);
+            data.put("time3", map3);
+            data.put("thing4", map4);
+            System.out.println(HttpUtils.wxSendMsg("32_HLw7FQPynA6IBOduPJS2yDUNfKPn6PN8bvgj1khDj7YAS5G2x0B1sJjEINsC7ooOknseROeusGUVTFKCmdjNbcMMV_0iJDxBdXlXhs06BgPzm2Vl3slIvNeVra-8MbsJpbp5kAM0EwWQwJ4vTWOcAHAXAS",openid,template_id,data));
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.yjyy.service.impl;
 
+import com.example.yjyy.dao.CardMapper;
 import com.example.yjyy.dao.PayCardMapper;
 import com.example.yjyy.dao.RoleMapper;
 import com.example.yjyy.dao.UserMapper;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PayCardMapper payCardMapper;
+
+    @Autowired
+    private CardMapper cardMapper;
 
     @Override
     public UserResult getUsername(String userid) {
@@ -147,6 +151,10 @@ public class UserServiceImpl implements UserService {
         if(user!=null)
             result.setUser(user);
         List<CardOrderResult> list = payCardMapper.getCardsByUser(userid);
+        for(CardOrderResult cardOrderResult: list){
+            cardOrderResult.setCourseList(cardMapper.getCourseListByCardId(cardOrderResult.getCardid()));
+            cardOrderResult.setVenueList(cardMapper.getVenueListByCardId(cardOrderResult.getCardid()));
+        }
         result.setCardlist(list);
         result.setResult(WebRestResult.SUCCESS);
         return result;
