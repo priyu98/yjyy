@@ -187,7 +187,7 @@
     left join yj_classroom cr on cr.classroomid = s.classroom and cr.flag = '0'
     left join yj_user_card uc on uc.payid = o.payid
     left join yj_card c on c.cardid = uc.cardid and c.flag = '0'
-    where (o.orderstatus = '1001' or o.orderstatus = '1002') and o.userid = #{userid}
+    where (o.orderstatus = '1001' or o.orderstatus = '1002' or o.orderstatus = '1003') and o.userid = #{userid}
     order by o.checkintime desc
     )A
     limit #{begin},#{end}
@@ -195,7 +195,7 @@
 
   <select id="findOrderByUserSchedule" parameterType="String" resultType="String">
     select orderid from yj_order
-    where userid = #{userid} and scheduleid = #{scheduleid} and orderstatus = '1000'
+    where userid = #{userid} and scheduleid = #{scheduleid} and orderstatus!='3000'
   </select>
 
   <select id="countOrderByUserid" parameterType="String" resultType="int">

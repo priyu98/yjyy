@@ -59,6 +59,12 @@ public class OrderServiceImpl implements OrderService {
             result.setMessage("距课程开始不足一小时，预约已结束");
             return result;
         }
+        String orderid = orderMapper.findOrderByUserSchedule(userid,scheduleid);
+        if(!Tools.isEmpty(orderid)){
+            result.setResult(WebRestResult.FAILURE);
+            result.setMessage("课程已预约");
+            return result;
+        }
         if(orderMapper.insert(order)==1){
             if(payCard.getCardstatus().equals("0")){
                 payCard.setCardstatus("1");
