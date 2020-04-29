@@ -1,6 +1,7 @@
 package com.example.yjyy.controller;
 
 import com.example.yjyy.entity.User;
+import com.example.yjyy.entity.dto.CheckinDto;
 import com.example.yjyy.interceptor.AppToken;
 import com.example.yjyy.result.PageResult;
 import com.example.yjyy.result.WebRestResult;
@@ -55,8 +56,8 @@ public class OrderController {
     @AppToken
     @CrossOrigin
     @PostMapping("checkin")
-    public WebRestResult chekin(@RequestBody List<String> orderlist){
-        WebRestResult result = orderService.checkin(orderlist);
+    public WebRestResult chekin(@RequestBody CheckinDto checkinDto){
+        WebRestResult result = orderService.checkin(checkinDto.getOrderlist());
         return result;
     }
 

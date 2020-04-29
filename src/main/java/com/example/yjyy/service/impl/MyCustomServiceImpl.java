@@ -28,6 +28,11 @@ public class MyCustomServiceImpl implements MyCustomService {
         List<Order> orderList = myCustomMapper.findOrerstatusByscheduleid(scheduleid);
         WebRestResult result = new WebRestResult();
 //        Map maps = new HashMap<>();
+        if(orderList.size()==0){
+            result.setResult(WebRestResult.SUCCESS);
+            result.setMessage("操作成功");
+            return result;
+        }
         for (Order order : orderList) {
             if (order.getOrderstatus().equals("1001")) {
                 order.setOrderstatus("1002");

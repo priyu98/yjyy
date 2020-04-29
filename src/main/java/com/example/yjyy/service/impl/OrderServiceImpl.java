@@ -168,6 +168,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public WebRestResult checkin(List<String> orderlist) {
         WebRestResult result = new WebRestResult();
+        if(orderlist.size()==0){
+            result.setResult(WebRestResult.SUCCESS);
+            return result;
+        }
         CheckinDto checkinDto = new CheckinDto();
         checkinDto.setDate(new Date());
         checkinDto.setOrderlist(orderlist);
