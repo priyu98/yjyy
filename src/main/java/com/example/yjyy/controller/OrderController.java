@@ -56,8 +56,8 @@ public class OrderController {
     @AppToken
     @CrossOrigin
     @PostMapping("checkin")
-    public WebRestResult chekin(@RequestBody CheckinDto checkinDto){
-        WebRestResult result = orderService.checkin(checkinDto.getOrderlist());
+    public WebRestResult chekin(@RequestParam List<String> orderlist){
+        WebRestResult result = orderService.checkin(orderlist);
         return result;
     }
 

@@ -296,7 +296,7 @@ public class HttpUtils {
 
     public static void main(String args[]){
         String template_id = "7RDWriJThlCrK9KtiWnLsex1GDCUJnn7DGHoiSdazUI";
-        String openid = "o9MUC5bXRlrn0N_Ccjtoxy_S7JeQ";
+        String openid = "o9MUC5QLCMDRFKe3Lv9n3p-V54z4";
         if(openid != null && !"".equals(openid)) {
             Map<String, Object> data = new HashMap<>();
             Map<String, String> map1 = new HashMap<>();
@@ -311,7 +311,7 @@ public class HttpUtils {
             data.put("name2", map2);
             data.put("time3", map3);
             data.put("thing4", map4);
-            System.out.println(HttpUtils.wxSendMsg("32_HLw7FQPynA6IBOduPJS2yDUNfKPn6PN8bvgj1khDj7YAS5G2x0B1sJjEINsC7ooOknseROeusGUVTFKCmdjNbcMMV_0iJDxBdXlXhs06BgPzm2Vl3slIvNeVra-8MbsJpbp5kAM0EwWQwJ4vTWOcAHAXAS",openid,template_id,data));
+            System.out.println(HttpUtils.wxSendMsg("32_76354Sl1RM51w6ggQJTdDO4AR4DgJZghquEOu4P1PnplPf4mAWO_bUW5x6B3RipJ73j8cp9c7xZWQOWl_71fAW77cIJjdGZKNCqWJvit20Lu3wy2ek45P13etWTc13TxzJ-1Bp2l9-oAVm8_HONfABAQXW",openid,template_id,data));
         }
 
     }
