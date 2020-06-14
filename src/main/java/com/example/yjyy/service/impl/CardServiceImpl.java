@@ -131,16 +131,17 @@ public class CardServiceImpl implements CardService {
             payCard.setGivetime(new Date());
             payCard.setQuota(cardMapper.selectByPrimaryKey(payCard.getCardid()).getQuota());
             Map map = Tools.doXMLParse(HttpUtils.wxUnifiedOrder(payCard.getPayid(),userMapper.selectByPrimaryKey(payCard.getUserid()).getOpenid(),payCard.getPayment()));
+            //调用微信统一下单接口，将返回的xml文本内容解析为map
             String return_code = (String)map.get("return_code");
-            if(return_code.equals("SUCCESS")){
+            if(return_code.equals("SUCCESS")){  //判断接口调用结果
                 String result_code = (String)map.get("result_code");
                 if(result_code.equals("SUCCESS")){
                     String prepay_id = (String)map.get("prepay_id");
                     String nonce_str = String.valueOf(Tools.getRandomNum());
                     String timestamp = String.valueOf(new Date().getTime()/1000);
-                    result.setPrepay_id(prepay_id);
+                    result.setPrepay_id(prepay_id);//返回prepay_id
                     result.setNonceStr(nonce_str);
-                    result.setPaySign(Tools.getPaySign(nonce_str,timestamp,prepay_id));
+                    result.setPaySign(Tools.getPaySign(nonce_str,timestamp,prepay_id));//支付参数再次签名
                     result.setTimeStamp(timestamp);
                 }
                 else{

@@ -36,14 +36,14 @@ public class wxController {
     @CrossOrigin
     public void wxReturnOrder(HttpServletRequest request){
         String xmlStr = Tools.getWxXml(request);
-        Map map = Tools.doXMLParse(xmlStr);
+        Map map = Tools.doXMLParse(xmlStr); //解析数据流
         String return_code = (String) map.get("return_code");
-        if(return_code.equals("SUCCESS")){
+        if(return_code.equals("SUCCESS")){ //判断支付结果
             String openid = (String)map.get("openid");
             PayCard payCard = payCardMapper.selectByPrimaryKey((String)map.get("out_trade_no"));
-            payCard.setPayflag(1);
+            payCard.setPayflag(1); //订单支付情况更新为已支付
             payCardMapper.updateByPrimaryKeySelective(payCard);
-            if(openid != null && !"".equals(openid)) {
+            if(openid != null && !"".equals(openid)) { //微信通知结果
                 String access_token = userMapper.getAccessToken();
                 String template_id = "wmFTYifkYlVwHu8hiBW6p6IXJzNT6zVow0eT56qRKxY";
                 String cardname = cardMapper.selectByPrimaryKey(payCard.getCardid()).getCardname();

@@ -29,12 +29,12 @@ public class TaskController {
     @Transactional
     public void autoCardTerm(){
         try{
-            payCardMapper.autoExpire();
-            payCardMapper.autoReduceTerm();
-            payCardMapper.autoOpenCard();
-            payCardMapper.autoReduceOpenTerm();
+            payCardMapper.autoExpire();//判断到期
+            payCardMapper.autoReduceTerm();//扣除有效期
+            payCardMapper.autoOpenCard();//判断开卡
+            payCardMapper.autoReduceOpenTerm();//扣除自动开卡时间
         }catch (Exception e){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//出错时整体进行回滚
         }
     }
 

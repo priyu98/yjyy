@@ -24,6 +24,15 @@ public class OrderPageResult extends Page {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date checkintime;
     private String cardname;
+    private String coursephoto;
+
+    public String getCoursephoto() {
+        return coursephoto;
+    }
+
+    public void setCoursephoto(String coursephoto) {
+        this.coursephoto = coursephoto;
+    }
 
     public String getCardname() {
         return cardname;

@@ -374,6 +374,6 @@
   </update>
 
   <delete id="deleteSessionKeyByOpenid" parameterType="String">
-    delete wx_session_key where openid = #{openid}
+    delete from wx_session_key where openid = #{openid}
   </delete>
 </mapper>

@@ -132,7 +132,7 @@
     select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
     select o.orderid, u1.username, s.coursename, v.venuename, d.label coursetype, u2.username courseteacher, s.duration,
     cr.classroomname classroom, s.studentnumber,
-    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname
+    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname, s.coursephoto
     from yj_order o
     left join sys_user u1 on u1.userid = o.userid and u1.flag = '0'
     left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'
@@ -206,7 +206,7 @@
     select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
     select o.orderid, u1.username, s.coursename, v.venuename, d.label coursetype, u2.username courseteacher, s.duration,
     cr.classroomname classroom, s.studentnumber,
-    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname
+    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname, s.coursephoto
     from yj_order o
     left join sys_user u1 on u1.userid = o.userid and u1.flag = '0'
     left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'
@@ -232,7 +232,7 @@
     select A.*, count(1) over() as CNT, ceil(count(1) over()/#{pagesize}) as PAGE from(
     select o.orderid, u1.username, s.coursename, v.venuename, d.label coursetype, u2.username courseteacher, s.duration,
     cr.classroomname classroom, s.studentnumber,
-    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname
+    s.starttime, s.endtime, o.ordertime, o.checkintime, o.orderstatus, c.cardname, s.coursephoto
     from yj_order o
     left join sys_user u1 on u1.userid = o.userid and u1.flag = '0'
     left join yj_schedule s on s.scheduleid = o.scheduleid and s.flag = '0'

@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResult loginAdmin(String username, String password) {
         UserResult result = new UserResult();
-        User user = userDao.loginAdmin(username, MD5Util.getMD5Info(password));
+        User user = userDao.loginAdmin(username, MD5Util.getMD5Info(password));//判断数据库是否存在账号密码相同的user
         if(user != null && roleDao.getRoleNameByUser(user.getUserid()).contains("管理员")){
             String rolename = roleDao.getRoleNameByUser(user.getUserid());
             String token = JwtUtils.generateToken(user.getUserid());
@@ -198,15 +198,15 @@ public class UserServiceImpl implements UserService {
                     user.setSex(sex);
                 }
                 else{
-                    user.setUsername("用户"+ Tools.getRandomNum());
+                    user.setUsername("用户"+ Tools.getRandomNum()); //随机生成用户名
                     user.setSex("0");
                 }
                 if(!"".equals(encryptedData) && encryptedData!=null){
-                    JSONObject data = new JSONObject(Tools.decrypt(userDao.getSessionKey(openid),iv,encryptedData));
+                    JSONObject data = new JSONObject(Tools.decrypt(userDao.getSessionKey(openid),iv,encryptedData));//解密加密数据
                     user.setUserphone(data.getString("phoneNumber"));
                 }
                 userDao.insertSelective(user);
-                roleDao.addUserRole(userid,"db85e3db01e446aca8a99e4da5da42eb");
+                roleDao.addUserRole(userid,"db85e3db01e446aca8a99e4da5da42eb");//新用户分配角色
                 String rolename = roleDao.getRoleNameByUser(user.getUserid());
                 String token = JwtUtils.generateToken(user.getUserid());
                 result.setUser(user);

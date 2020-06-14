@@ -220,7 +220,8 @@ public class HttpUtils {
         param.put("touser",touser);
         param.put("template_id",template_id);
         param.put("data",data);
-        return httpsRequest("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,"POST",new JSONObject(param).toString()).toString();
+        String result = httpsRequest("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token="+access_token,"POST",new JSONObject(param).toString()).toString();
+        return result;
     }
 
     public static String testPost(String urlStr,String xmlInfo) {
@@ -297,21 +298,24 @@ public class HttpUtils {
     public static void main(String args[]){
         String template_id = "7RDWriJThlCrK9KtiWnLsex1GDCUJnn7DGHoiSdazUI";
         String openid = "o9MUC5QLCMDRFKe3Lv9n3p-V54z4";
+        String access_token = "34_Si5hZJ4ZPJaG-P75ydSTJoF_TdY4mXedsfNIDYlKMQkSOxuRU8xh6ZVl-Izlxcv8t0jlHDPrZ45L_cLbJ0lXO91hAaOZkdvfI7F6LcuqAhHgsjMFgEkMR4Stqo8uTGfMfewePJjr6nESjrK0AGPbAGAUAJ";
         if(openid != null && !"".equals(openid)) {
             Map<String, Object> data = new HashMap<>();
             Map<String, String> map1 = new HashMap<>();
             Map<String, String> map2 = new HashMap<>();
             Map<String, String> map3 = new HashMap<>();
             Map<String, String> map4 = new HashMap<>();
+            Map<String, String> map5 = new HashMap<>();
             map1.put("value", "test");
             map2.put("value", "test");
             map3.put("value", Tools.date2Str(new Date(), "yyyy-MM-dd hh:mm"));
             map4.put("value", "test");
+            map5.put("value", "test");
             data.put("thing6", map1);
             data.put("name2", map2);
             data.put("time3", map3);
             data.put("thing4", map4);
-            System.out.println(HttpUtils.wxSendMsg("32_76354Sl1RM51w6ggQJTdDO4AR4DgJZghquEOu4P1PnplPf4mAWO_bUW5x6B3RipJ73j8cp9c7xZWQOWl_71fAW77cIJjdGZKNCqWJvit20Lu3wy2ek45P13etWTc13TxzJ-1Bp2l9-oAVm8_HONfABAQXW",openid,template_id,data));
+            System.out.println(HttpUtils.wxSendMsg(access_token, openid, template_id, data));
         }
 
     }

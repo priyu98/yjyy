@@ -187,9 +187,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                 int booknum = 0;
                 int checkinnum = 0;
                 for(Order order:orderList){
-                    if(order.getOrderstatus().equals("1000"))
+                    if(order.getOrderstatus().equals("1000") || order.getOrderstatus().equals("1001") || order.getOrderstatus().equals("1002") || order.getOrderstatus().equals("1003"))
                         booknum++;
-                    else if(order.getOrderstatus().equals("1001"))
+                    if(order.getOrderstatus().equals("1001") || order.getOrderstatus().equals("1002"))
                         checkinnum++;
                 }
                 schedulePageResult.setBooknum(booknum);

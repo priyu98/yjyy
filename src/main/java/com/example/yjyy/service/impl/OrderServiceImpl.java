@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
             data.put("name2", map2);
             data.put("time3", map3);
             data.put("thing4", map4);
-            HttpUtils.wxSendMsg(access_token,openid,template_id,data);
+            HttpUtils.wxSendMsg(access_token,openid,template_id,data);//订阅消息发送
         }
         return result;
     }
